@@ -140,6 +140,7 @@ export { DropzoneButton } from './DropzoneButton/DropzoneButton';
 
 // DND
 export { DndList } from './DndList/DndList';
+export { DndList2 } from './DndList2/DndList2';
 export { DndListHandle } from './DndListHandle/DndListHandle';
 export { DndTable } from './DndTable/DndTable';
 
