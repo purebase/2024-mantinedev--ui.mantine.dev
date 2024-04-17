@@ -6,27 +6,26 @@ import {DraggableItem} from '@/lib/DndList3/DndList3';
 interface Props<T> {
     dndId1: string,
     items1: Array<T>
-    renderItem1: (item: T) => JSX.Element
+    renderChild1: (parent: T) => JSX.Element
 }
 
 export function DndList3Cascade1<T extends DraggableItem>(p: Props<T>) {
     return (
-        <Droppable droppableId={p.dndId1} direction="vertical">
+        <Droppable droppableId="Categories" direction="vertical" type="">
             {(drop1Provider) => (
-                <ul {...drop1Provider.droppableProps} ref={drop1Provider.innerRef}>
+                <ul ref={drop1Provider.innerRef}>
 
                     {p.items1.map((item, index) => (
 
-                        <Draggable key={item.id} index={index} draggableId={item.id}>
-                            {(drag1Provider, snapshot) => (
+                        <Draggable key={item.id} index={index} draggableId={`category${item.id}`}>
+                            {(drag1Provider) => (
                                 <li
-                                  className={cx(classes.item,
-                                        { [classes.itemDragging]: snapshot.isDragging })}
+                                  className={cx(classes.item)}
                                   {...drag1Provider.draggableProps}
                                   {...drag1Provider.dragHandleProps}
                                   ref={drag1Provider.innerRef}
                                 >
-                                    {item.id}
+                                    {p.renderChild1(item)}
                                 </li>
                             )}
                         </Draggable>
