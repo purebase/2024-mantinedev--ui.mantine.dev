@@ -2,8 +2,8 @@ import {Text} from '@mantine/core';
 import {DragDropContext} from '@hello-pangea/dnd';
 import {useContext} from 'react';
 import classes from './DndList3.module.css';
-import {DndList3DraggableListItems} from '@/lib/DndList3/DndList3DraggableListItems';
 import {DndList3Context, DndList3ContextProvider} from '@/lib/DndList3/DndList3Context';
+import {DndList3Cascade1} from "@/lib/DndList3/DndList3Cascade1";
 
 export interface DraggableItem {
   id: string
@@ -43,9 +43,10 @@ export function DndList3Stage() {
                 handlers.reorder({ from: source.index, to: destination?.index || 0 })
             }
         >
-            <DndList3DraggableListItems<ChemicalItem>
-              items={state as ChemicalItem[]}
-              renderItem={renderItem}
+            <DndList3Cascade1<ChemicalItem>
+              dndId1="dnd-list-items"
+              items1={state as ChemicalItem[]}
+              renderItem1={renderItem}
             />
         </DragDropContext>
     );
