@@ -15,11 +15,11 @@ export function DndList3Cascade2<T extends DraggableChild>(p: Props<T>) {
     const filteredItems = p.items2.filter((item) => item.parentId === p.parentId);
 
     return (
-        <Droppable droppableId={`category-${p.parentId}-childs`} direction="vertical">
+        <Droppable droppableId={`${p.parentId}`} direction="vertical">
             {(drop2Provider) => (
                 <ul ref={drop2Provider.innerRef}>
                     {filteredItems.map((item, index) => (
-                        <Draggable key={item.id} index={index} draggableId={`category-child-${item.id}`}>
+                        <Draggable key={item.id} index={index} draggableId={`${item.id}`}>
                             {(drag2Provider, snapshot) => (
                                 <li
                                   className={cx(classes.item,

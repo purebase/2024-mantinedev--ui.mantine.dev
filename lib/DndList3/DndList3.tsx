@@ -1,5 +1,5 @@
 import {Text} from '@mantine/core';
-import {DragDropContext} from '@hello-pangea/dnd';
+import {DragDropContext, OnDragEndResponder} from '@hello-pangea/dnd';
 import {useContext} from 'react';
 import classes from './DndList3.module.css';
 import {DndList3Context, DndList3ContextProvider} from '@/lib/DndList3/DndList3Context';
@@ -7,7 +7,8 @@ import {DndList3Cascade1} from '@/lib/DndList3/DndList3Cascade1';
 import {DndList3Cascade2} from '@/lib/DndList3/DndList3Cascade2';
 
 export interface DraggableItem {
-  id: string, name: string
+    id: string,
+    name: string
 }
 
 export interface DraggableChild extends DraggableItem {
@@ -15,10 +16,14 @@ export interface DraggableChild extends DraggableItem {
 }
 
 interface ChemicalItem extends DraggableChild {
-  position: number, mass: number, symbol: string
+    position: number,
+    mass: number,
+    symbol: string
 }
 
-interface Category extends DraggableItem {}
+interface Category extends DraggableItem {
+}
+
 const categories: Category[] = [
     { id: '1', name: 'Catergory 1' },
     { id: '2', name: 'Category 2' },
@@ -29,9 +34,9 @@ const chemicalItemList: ChemicalItem[] = [
     { id: '1', position: 39, mass: 88.906, symbol: 'Y', name: 'PAUL', parentId: '1' },
     { id: '2', position: 56, mass: 137.33, symbol: 'Ba', name: 'EVA', parentId: '1' },
     { id: '3', position: 58, mass: 140.12, symbol: 'Ce', name: 'THOMAS', parentId: '1' },
-/*    { id: '4', position: 6, mass: 12.011, symbol: 'C', name: 'NICOLE', parentId: '1' },
-    { id: '5', position: 7, mass: 14.007, symbol: 'N', name: 'WILMAR', parentId: '1' },
-    { id: '6', position: 8, mass: 14.007, symbol: 'N', name: 'MANUEL', parentId: '1' },*/
+    /*    { id: '4', position: 6, mass: 12.011, symbol: 'C', name: 'NICOLE', parentId: '1' },
+        { id: '5', position: 7, mass: 14.007, symbol: 'N', name: 'WILMAR', parentId: '1' },
+        { id: '6', position: 8, mass: 14.007, symbol: 'N', name: 'MANUEL', parentId: '1' },*/
 ];
 
 const renderItem2 = (item: ChemicalItem) => (
@@ -47,30 +52,54 @@ const renderItem2 = (item: ChemicalItem) => (
 );
 
 const renderChild1 = (parent: Category) => {
-    const { state } = useContext(DndList3Context);
+    const { depth2 } = useContext(DndList3Context);
     return (
         <DndList3Cascade2<ChemicalItem>
           parentId={parent.id}
           dndId2="dnd-list-items"
-          items2={state as ChemicalItem[]}
+          items2={depth2 as ChemicalItem[]}
           renderItem2={renderItem2}
         />
     );
 };
 
 export function DndList3Stage() {
-    const { handlers } = useContext(DndList3Context);
+    const { depth1, depth1Handlers, depth2, depth2Handlers } = useContext(DndList3Context);
+    //const depth1Typed = depth1 as Category[];
+    const depth2Typed = depth2 as ChemicalItem[];
+
+    const dragEnd: OnDragEndResponder = (result => {
+        const { source, destination, draggableId } = result;
+        console.log('onDragEnd()', source, destination, destination?.droppableId, draggableId);
+        if (!destination) {
+            return;
+        }
+        if (destination.droppableId === 'ROOT') {
+            depth1Handlers.reorder({ from: source.index, to: destination?.index || 0 });
+        } else if (destination.droppableId !== source.droppableId) {
+            const newDepth2 = depth2Typed.map((item) => {
+                if (item.id === draggableId) {
+                    return {
+                        ...item,
+                        parentId: destination.droppableId,
+                    };
+                }
+                    return item;
+            });
+            console.log('onDragEnd()#2', JSON.stringify(newDepth2, null, 2));
+            depth2Handlers.setState(newDepth2);
+        } else {
+            depth2Handlers.reorder({ from: source.index, to: destination?.index || 0 });
+        }
+    });
 
     return (
         <DragDropContext
-          onDragEnd={(result, provided) => {
-              console.log('onDragEnd()', result, provided);
-              handlers.reorder({ from: result.source.index, to: result.destination?.index || 0 });
-          }}
+          onDragEnd={dragEnd}
         >
             <DndList3Cascade1<Category>
               dndId1="dnd-list"
-              items1={categories}
+              items1={depth1 as Category[]}
               renderChild1={renderChild1}
             />
         </DragDropContext>
@@ -79,10 +108,10 @@ export function DndList3Stage() {
 
 export function DndList3() {
     return (
-    <>
-        <DndList3ContextProvider items={chemicalItemList}>
-            <DndList3Stage />
-        </DndList3ContextProvider>
-    </>
+        <>
+            <DndList3ContextProvider depth1={categories} depth2={chemicalItemList}>
+                <DndList3Stage />
+            </DndList3ContextProvider>
+        </>
     );
 }

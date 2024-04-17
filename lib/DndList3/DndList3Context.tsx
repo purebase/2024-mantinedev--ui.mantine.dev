@@ -3,22 +3,27 @@ import {useListState, UseListStateHandlers} from '@mantine/hooks';
 import {DraggableItem} from '@/lib/DndList3/DndList3';
 
 interface ProviderProps<T> extends PropsWithChildren {
-    items: T[]
+    depth1: T[],
+    depth2: T[]
 }
 
 export const DndList3Context = createContext(
     {} as {
-        state: unknown[],
-        handlers: UseListStateHandlers<any>
+        depth1: unknown[], depth1Handlers: UseListStateHandlers<any>,
+        depth2: unknown[], depth2Handlers: UseListStateHandlers<any>
     }
 );
 
 export function DndList3ContextProvider<T extends DraggableItem>(p: ProviderProps<T>) {
-    const [state, handlers] = useListState(p.items);
+    const [depth1, depth1Handlers] = useListState(p.depth1);
+    const [depth2, depth2Handlers] = useListState(p.depth2);
 
     return (
         <DndList3Context.Provider value={{
-            state, handlers,
+            depth1,
+            depth1Handlers,
+            depth2,
+            depth2Handlers,
         }}
         >
             {p.children}

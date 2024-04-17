@@ -11,7 +11,7 @@ interface Props<T> {
 
 export function DndList3Cascade1<T extends DraggableItem>(p: Props<T>) {
     return (
-        <Droppable droppableId="Categories" direction="vertical" type="">
+        <Droppable droppableId="ROOT" direction="vertical" type="">
             {(drop1Provider) => (
                 <ul ref={drop1Provider.innerRef}>
 
@@ -25,6 +25,7 @@ export function DndList3Cascade1<T extends DraggableItem>(p: Props<T>) {
                                   {...drag1Provider.dragHandleProps}
                                   ref={drag1Provider.innerRef}
                                 >
+                                    {item.name}
                                     {p.renderChild1(item)}
                                 </li>
                             )}
