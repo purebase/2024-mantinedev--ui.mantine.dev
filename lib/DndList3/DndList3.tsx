@@ -1,45 +1,28 @@
-import { Text } from '@mantine/core';
-import { DragDropContext, OnDragEndResponder } from '@hello-pangea/dnd';
-import { useContext } from 'react';
+import {Text} from '@mantine/core';
+import {DragDropContext, OnDragEndResponder} from '@hello-pangea/dnd';
+import {useContext} from 'react';
 import classes from './DndList3.module.css';
-import { DndList3Cascade2 } from './DndList3Cascade2';
-import { DndList3Context, DndList3ContextProvider } from './DndList3Context';
-import { DndList3Cascade1 } from './DndList3Cascade1';
-
-export interface DraggableItem {
-    id: string,
-    name: string
-}
-
-export interface DraggableChild extends DraggableItem {
-    parentId: string
-}
-
-interface ChemicalItem extends DraggableChild {
-    position: number,
-    mass: number,
-    symbol: string
-}
-
-interface Category extends DraggableItem {
-}
+import {DndList3Cascade2} from './DndList3Cascade2';
+import {DndList3Context, DndList3ContextProvider} from './DndList3Context';
+import {DndList3Cascade1} from './DndList3Cascade1';
+import {Category, ChemicalItem, DraggableItem} from './DndList3DataTypes';
 
 const categories: Category[] = [
-    { id: '1', name: 'Catergory 1' },
-    { id: '2', name: 'Category 2' },
-    { id: '3', name: 'Category 3' },
+    { id: '1', name: 'Catergory 1', children: ['1', '2', '3'] },
+    { id: '2', name: 'Category 2', children: [] },
+    { id: '3', name: 'Category 3', children: [] },
 ];
 
 const chemicalItemList: ChemicalItem[] = [
-    { id: '1', position: 39, mass: 88.906, symbol: 'Y', name: 'PAUL', parentId: '1' },
-    { id: '2', position: 56, mass: 137.33, symbol: 'Ba', name: 'EVA', parentId: '1' },
-    { id: '3', position: 58, mass: 140.12, symbol: 'Ce', name: 'THOMAS', parentId: '1' },
+    { id: '1', position: 39, mass: 88.906, symbol: 'Y', name: 'PAUL' },
+    { id: '2', position: 56, mass: 137.33, symbol: 'Ba', name: 'EVA' },
+    { id: '3', position: 58, mass: 140.12, symbol: 'Ce', name: 'THOMAS' },
     /*    { id: '4', position: 6, mass: 12.011, symbol: 'C', name: 'NICOLE', parentId: '1' },
         { id: '5', position: 7, mass: 14.007, symbol: 'N', name: 'WILMAR', parentId: '1' },
         { id: '6', position: 8, mass: 14.007, symbol: 'N', name: 'MANUEL', parentId: '1' },*/
 ];
 
-const renderItem2 = (item: ChemicalItem) => (
+const renderChemicalItem = (item: ChemicalItem) => (
     <>
         <Text className={classes.symbol}>{item.symbol}</Text>
         <div>
@@ -51,14 +34,16 @@ const renderItem2 = (item: ChemicalItem) => (
     </>
 );
 
-const renderChild1 = (parent: Category) => {
+const renderCategory = (parent: Category) => {
     const { depth2 } = useContext(DndList3Context);
+    const typedDepth2 = depth2 as ChemicalItem[];
+    const items = typedDepth2.filter(item => parent.children.includes(item.id));
     return (
         <DndList3Cascade2<ChemicalItem>
           parentId={parent.id}
           dndId2="dnd-list-items"
-          items2={depth2 as ChemicalItem[]}
-          renderItem2={renderItem2}
+          items2={items}
+          renderItem2={renderChemicalItem}
         />
     );
 };
@@ -69,7 +54,9 @@ export function DndList3Stage() {
     const depth2Typed = depth2 as ChemicalItem[];
 
     const dragEnd: OnDragEndResponder = (result => {
-        const { source, destination, draggableId } = result;
+
+        // TODO Use drag end strategy of https://egghead.io/lessons/react-move-items-between-columns-with-react-beautiful-dnd-using-ondragend
+/*        const { source, destination, draggableId } = result;
         console.log('onDragEnd()', source, destination, destination?.droppableId, draggableId);
         if (!destination) {
             return;
@@ -90,7 +77,7 @@ export function DndList3Stage() {
             depth2Handlers.setState(newDepth2);
         } else {
             depth2Handlers.reorder({ from: source.index, to: destination?.index || 0 });
-        }
+        }*/
     });
 
     return (
@@ -100,7 +87,7 @@ export function DndList3Stage() {
             <DndList3Cascade1<Category>
               dndId1="dnd-list"
               items1={depth1 as Category[]}
-              renderChild1={renderChild1}
+              renderChild1={renderCategory}
             />
         </DragDropContext>
     );
@@ -109,7 +96,7 @@ export function DndList3Stage() {
 export function DndList3() {
     return (
         <>
-            <DndList3ContextProvider depth1={categories} depth2={chemicalItemList}>
+            <DndList3ContextProvider<DraggableItem> depth1={categories} depth2={chemicalItemList}>
                 <DndList3Stage />
             </DndList3ContextProvider>
         </>

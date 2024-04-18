@@ -1,7 +1,7 @@
-import { Draggable, Droppable } from '@hello-pangea/dnd';
+import {Draggable, Droppable} from '@hello-pangea/dnd';
 import cx from 'clsx';
 import classes from './DndList3.module.css';
-import { DraggableChild } from './DndList3';
+import {DraggableItem} from './DndList3DataTypes';
 
 interface Props<T> {
     parentId: string,
@@ -10,14 +10,12 @@ interface Props<T> {
     renderItem2: (item: T) => JSX.Element
 }
 
-export function DndList3Cascade2<T extends DraggableChild>(p: Props<T>) {
-    const filteredItems = p.items2.filter((item) => item.parentId === p.parentId);
-
+export function DndList3Cascade2<T extends DraggableItem>(p: Props<T>) {
     return (
         <Droppable droppableId={`${p.parentId}`} direction="vertical">
             {(drop2Provider) => (
                 <ul ref={drop2Provider.innerRef}>
-                    {filteredItems.map((item, index) => (
+                    {p.items2.map((item, index) => (
                         <Draggable key={item.id} index={index} draggableId={`${item.id}`}>
                             {(drag2Provider, snapshot) => (
                                 <li

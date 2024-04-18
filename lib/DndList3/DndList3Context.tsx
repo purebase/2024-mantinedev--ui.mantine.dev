@@ -1,6 +1,7 @@
-import { createContext, PropsWithChildren } from 'react';
-import { useListState, UseListStateHandlers } from '@mantine/hooks';
-import { DraggableItem } from './DndList3';
+import {createContext, PropsWithChildren} from 'react';
+import {useListState, UseListStateHandlers} from '@mantine/hooks';
+
+import {DraggableItem} from './DndList3DataTypes';
 
 interface ProviderProps<T> extends PropsWithChildren {
     depth1: T[],
