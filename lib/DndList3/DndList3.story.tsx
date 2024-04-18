@@ -1,6 +1,6 @@
 import attributes from './attributes.json';
-import { StoryWrapper } from '@/components/StoryWrapper/StoryWrapper';
-import { DndList3 } from '@/lib';
+import { StoryWrapper } from '../../components/StoryWrapper/StoryWrapper';
+import { DndList3 } from './DndList3';
 
 export default { title: 'DndList3' };
 

@@ -1,10 +1,10 @@
-import {Text} from '@mantine/core';
-import {DragDropContext, OnDragEndResponder} from '@hello-pangea/dnd';
-import {useContext} from 'react';
+import { Text } from '@mantine/core';
+import { DragDropContext, OnDragEndResponder } from '@hello-pangea/dnd';
+import { useContext } from 'react';
 import classes from './DndList3.module.css';
-import {DndList3Context, DndList3ContextProvider} from '@/lib/DndList3/DndList3Context';
-import {DndList3Cascade1} from '@/lib/DndList3/DndList3Cascade1';
-import {DndList3Cascade2} from '@/lib/DndList3/DndList3Cascade2';
+import {DndList3Context, DndList3ContextProvider} from './DndList3Context';
+import { DndList3Cascade1 } from './DndList3Cascade1';
+import { DndList3Cascade2 } from './DndList3Cascade2';
 
 export interface DraggableItem {
     id: string,
@@ -53,6 +53,9 @@ const renderItem2 = (item: ChemicalItem) => (
 
 const renderChild1 = (parent: Category) => {
     const { depth2 } = useContext(DndList3Context);
+    // TODO - check if this is possible:
+    // const { depth2 } = useContext<ContextType<DraggableItem>>(DndList3Context);
+
     return (
         <DndList3Cascade2<ChemicalItem>
           parentId={parent.id}
@@ -64,7 +67,13 @@ const renderChild1 = (parent: Category) => {
 };
 
 export function DndList3Stage() {
-    const { depth1, depth1Handlers, depth2, depth2Handlers } = useContext(DndList3Context);
+    const {
+        depth1, depth1Handlers,
+        depth2, depth2Handlers,
+    } = useContext(DndList3Context);
+    // TODO - check if this is possible:
+    // } = useContext<ContextType<DraggableItem>>(DndList3Context);
+
     //const depth1Typed = depth1 as Category[];
     const depth2Typed = depth2 as ChemicalItem[];
 
