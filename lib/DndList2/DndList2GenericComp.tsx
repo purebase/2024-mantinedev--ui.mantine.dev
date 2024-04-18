@@ -2,7 +2,7 @@ import { useListState } from '@mantine/hooks';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import cx from 'clsx';
 import classes from './DndList2.module.css';
-import { DraggableItem } from '@/lib/DndList2/DndList2';
+import { DraggableItem } from './DndList2';
 
 interface Props<T> {
     data: Array<T>

@@ -1,10 +1,10 @@
-import {Text} from '@mantine/core';
-import {DragDropContext, OnDragEndResponder} from '@hello-pangea/dnd';
-import {useContext} from 'react';
+import { Text } from '@mantine/core';
+import { DragDropContext, OnDragEndResponder } from '@hello-pangea/dnd';
+import { useContext } from 'react';
 import classes from './DndList3.module.css';
-import {DndList3Context, DndList3ContextProvider} from '@/lib/DndList3/DndList3Context';
-import {DndList3Cascade1} from '@/lib/DndList3/DndList3Cascade1';
-import {DndList3Cascade2} from '@/lib/DndList3/DndList3Cascade2';
+import { DndList3Cascade2 } from './DndList3Cascade2';
+import { DndList3Context, DndList3ContextProvider } from './DndList3Context';
+import { DndList3Cascade1 } from './DndList3Cascade1';
 
 export interface DraggableItem {
     id: string,

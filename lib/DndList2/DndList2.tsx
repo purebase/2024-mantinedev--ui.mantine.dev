@@ -1,6 +1,6 @@
 import { Text } from '@mantine/core';
-import { DndList2GenericComp } from '@/lib/DndList2/DndList2GenericComp';
 import classes from './DndList2.module.css';
+import { DndList2GenericComp } from './DndList2GenericComp';
 
 export interface DraggableItem {
   id: string

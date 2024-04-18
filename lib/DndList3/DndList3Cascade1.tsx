@@ -1,7 +1,7 @@
-import {Draggable, Droppable} from '@hello-pangea/dnd';
+import { Draggable, Droppable } from '@hello-pangea/dnd';
 import cx from 'clsx';
 import classes from './DndList3.module.css';
-import {DraggableItem} from '@/lib/DndList3/DndList3';
+import { DraggableItem } from './DndList3';
 
 interface Props<T> {
     dndId1: string,
