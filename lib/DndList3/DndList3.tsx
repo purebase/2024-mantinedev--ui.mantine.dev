@@ -17,9 +17,9 @@ const chemicalItemList: ChemicalItem[] = [
     { id: '1', position: 39, mass: 88.906, symbol: 'Y', name: 'PAUL' },
     { id: '2', position: 56, mass: 137.33, symbol: 'Ba', name: 'EVA' },
     { id: '3', position: 58, mass: 140.12, symbol: 'Ce', name: 'THOMAS' },
-    /*    { id: '4', position: 6, mass: 12.011, symbol: 'C', name: 'NICOLE', parentId: '1' },
-        { id: '5', position: 7, mass: 14.007, symbol: 'N', name: 'WILMAR', parentId: '1' },
-        { id: '6', position: 8, mass: 14.007, symbol: 'N', name: 'MANUEL', parentId: '1' },*/
+    { id: '4', position: 6, mass: 12.011, symbol: 'C', name: 'NICOLE' },
+/*        { id: '5', position: 7, mass: 14.007, symbol: 'N', name: 'WILMAR', parentId: '1' },
+        { id: '6', position: 8, mass: 14.007, symbol: 'N', name: 'MANUEL', parentId: '1' },*!/*/
 ];
 
 const renderChemicalItem = (item: ChemicalItem) => (
@@ -37,7 +37,10 @@ const renderChemicalItem = (item: ChemicalItem) => (
 const renderCategory = (parent: Category) => {
     const { depth2 } = useContext(DndList3Context);
     const typedDepth2 = depth2 as ChemicalItem[];
-    const items = typedDepth2.filter(item => parent.children.includes(item.id));
+    const items: ChemicalItem[] = parent.children.map(
+        (itemId) => typedDepth2.find(item => item.id === itemId))
+        .filter(item => item !== undefined) as ChemicalItem[];
+
     return (
         <DndList3Cascade2<ChemicalItem>
           parentId={parent.id}
@@ -54,7 +57,6 @@ export function DndList3Stage() {
     const depth2Typed = depth2 as ChemicalItem[];
 
     const dragEnd: OnDragEndResponder = (result => {
-
         const { source, destination, draggableId } = result;
         console.log('onDragEnd()', source, destination, destination?.droppableId, draggableId);
 
@@ -73,24 +75,25 @@ export function DndList3Stage() {
         const finish = depth1Typed.find(category => category.id === destination.droppableId);
 
         if (start && finish && start === finish) {
-            const newChildIds = Array.from(start.children);
+            const newChildIds = [...start.children];
+            console.log('onDragEnd()#1.1', JSON.stringify(depth1Typed, null, 2));
+            const item = start.children[source.index];
+
             newChildIds.splice(source.index, 1);
-            newChildIds.splice(destination.index, 0, draggableId);
+            newChildIds.splice(destination.index, 0, item);
 
             const newCategory = {
                 ...start,
                 children: newChildIds,
             };
 
-            const newState = depth1Typed.map(currentCategory => {
-                return (currentCategory.id === newCategory.id)
-                    ? newCategory : currentCategory;
-            });
+            const newState = depth1Typed.map(currentCategory => (currentCategory.id === newCategory.id)
+                    ? newCategory : currentCategory);
 
+            console.log('onDragEnd()#1.2', JSON.stringify(newState, null, 2));
             depth1Handlers.setState(newState);
             //return;
         }
-
 
         // TODO Use drag end strategy of https://egghead.io/lessons/react-move-items-between-columns-with-react-beautiful-dnd-using-ondragend
 /*        const { source, destination, draggableId } = result;
