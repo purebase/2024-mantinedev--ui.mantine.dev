@@ -50,10 +50,47 @@ const renderCategory = (parent: Category) => {
 
 export function DndList3Stage() {
     const { depth1, depth1Handlers, depth2, depth2Handlers } = useContext(DndList3Context);
-    //const depth1Typed = depth1 as Category[];
+    const depth1Typed = depth1 as Category[];
     const depth2Typed = depth2 as ChemicalItem[];
 
     const dragEnd: OnDragEndResponder = (result => {
+
+        const { source, destination, draggableId } = result;
+        console.log('onDragEnd()', source, destination, destination?.droppableId, draggableId);
+
+        if (!destination) {
+            return;
+        }
+
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return;
+        }
+
+        const start = depth1Typed.find(category => category.id === source.droppableId);
+        const finish = depth1Typed.find(category => category.id === destination.droppableId);
+
+        if (start && finish && start === finish) {
+            const newChildIds = Array.from(start.children);
+            newChildIds.splice(source.index, 1);
+            newChildIds.splice(destination.index, 0, draggableId);
+
+            const newCategory = {
+                ...start,
+                children: newChildIds,
+            };
+
+            const newState = depth1Typed.map(currentCategory => {
+                return (currentCategory.id === newCategory.id)
+                    ? newCategory : currentCategory;
+            });
+
+            depth1Handlers.setState(newState);
+            //return;
+        }
+
 
         // TODO Use drag end strategy of https://egghead.io/lessons/react-move-items-between-columns-with-react-beautiful-dnd-using-ondragend
 /*        const { source, destination, draggableId } = result;
