@@ -10,7 +10,7 @@ interface Props<T> {
     renderItem2: (item: T) => JSX.Element
 }
 
-export function DndList3Cascade2<T extends DraggableItem>(p: Props<T>) {
+export function DndList3TreeDepth2<T extends DraggableItem>(p: Props<T>) {
     return (
         <Droppable droppableId={`${p.parentId}`} direction="vertical">
             {(drop2Provider) => (
