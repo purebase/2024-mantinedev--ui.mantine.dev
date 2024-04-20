@@ -1,8 +1,8 @@
-import {DragDropContext, OnDragEndResponder} from '@hello-pangea/dnd';
-import {useContext} from 'react';
-import {DndList3Context} from './DndList3Context';
-import {DndList3TreeDepth1} from './DndList3TreeDepth1';
-import {DraggableParent} from './DndList3TreeTypes';
+import { DragDropContext, OnDragEndResponder } from '@hello-pangea/dnd';
+import { useContext } from 'react';
+import { DndList3Context } from './DndList3Context';
+import { DndList3TreeDepth1 } from './DndList3TreeDepth1';
+import { DraggableParent } from './DndList3TreeTypes';
 
 interface Props {
     renderTreeDepth1Items: (parent: DraggableParent) => JSX.Element

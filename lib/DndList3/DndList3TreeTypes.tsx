@@ -6,4 +6,3 @@ export interface DraggableItem {
 export interface DraggableParent extends DraggableItem {
     children: string[]
 }
-

@@ -1,10 +1,10 @@
-import {useContext} from 'react';
-import {Text} from '@mantine/core';
-import {DndList3Context, DndList3ContextProvider} from './DndList3Context';
-import {DndList3TreeDepth2} from './DndList3TreeDepth2';
+import { useContext } from 'react';
+import { Text } from '@mantine/core';
+import { DndList3Context, DndList3ContextProvider } from './DndList3Context';
+import { DndList3TreeDepth2 } from './DndList3TreeDepth2';
 import classes from './DndList3.module.css';
-import {DraggableItem, DraggableParent} from './DndList3TreeTypes';
-import {DndList3Tree} from './DndList3Tree';
+import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
+import { DndList3Tree } from './DndList3Tree';
 
 export interface ChemicalItem extends DraggableItem {
     position: number,
