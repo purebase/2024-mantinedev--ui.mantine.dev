@@ -1,16 +1,16 @@
 import {Draggable, Droppable} from '@hello-pangea/dnd';
 import cx from 'clsx';
 import classes from './DndList3.module.css';
-import {DraggableItem} from './DndList3DataTypes';
+import {DraggableItem} from './DndList3TreeTypes';
 
-interface Props<T> {
+interface Props {
     parentId: string,
     dndId2: string,
-    items2: Array<T>
-    renderItem2: (item: T) => JSX.Element
+    items2: Array<DraggableItem>
+    renderItem2: (item: DraggableItem) => JSX.Element
 }
 
-export function DndList3TreeDepth2<T extends DraggableItem>(p: Props<T>) {
+export function DndList3TreeDepth2(p: Props) {
     return (
         <Droppable droppableId={`${p.parentId}`} direction="vertical">
             {(drop2Provider) => (

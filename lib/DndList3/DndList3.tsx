@@ -3,7 +3,7 @@ import {Text} from '@mantine/core';
 import {DndList3Context, DndList3ContextProvider} from './DndList3Context';
 import {DndList3TreeDepth2} from './DndList3TreeDepth2';
 import classes from './DndList3.module.css';
-import {DraggableItem, DraggableParent} from './DndList3DataTypes';
+import {DraggableItem, DraggableParent} from './DndList3TreeTypes';
 import {DndList3Tree} from './DndList3Tree';
 
 export interface ChemicalItem extends DraggableItem {
@@ -12,8 +12,7 @@ export interface ChemicalItem extends DraggableItem {
     symbol: string
 }
 
-export interface Category extends DraggableParent {
-}
+export interface Category extends DraggableParent {}
 
 const categories: Category[] = [
     { id: '1', name: 'Catergory 1', children: ['1', '2', '3'] },
@@ -35,29 +34,32 @@ const chemicalItemList: ChemicalItem[] = [
     { id: '11', position: 58, mass: 140.12, symbol: 'Ce', name: 'DANI' },
     { id: '12', position: 6, mass: 12.011, symbol: 'C', name: 'WILMAR' },
 ];
-const renderChemicalItem = (item: ChemicalItem) => (
+const renderChemicalItem = (item: DraggableItem) => {
+    const chemicalItem = item as ChemicalItem;
+    return (
     <>
-        <Text className={classes.symbol}>{item.symbol}</Text>
+        <Text className={classes.symbol}>{chemicalItem.symbol}</Text>
         <div>
             <Text>{item.name}</Text>
             <Text c="dimmed" size="sm">
-                Position: {item.position} • Mass: {item.mass}
+                Position: {chemicalItem.position} • Mass: {chemicalItem.mass}
             </Text>
         </div>
-    </>
-);
+    </>);
+};
+
 export const renderCategory = (parent: DraggableParent) => {
     const { depth2 } = useContext(DndList3Context);
-    const typedDepth2 = depth2 as ChemicalItem[];
-    const items: ChemicalItem[] = parent.children.map(
-        (itemId) => typedDepth2.find(item => item.id === itemId))
-        .filter(item => item !== undefined) as ChemicalItem[];
+
+    const itemsOfParent = depth2 as DraggableItem[];
+    const items = parent.children.map(
+        (itemId) => itemsOfParent.find(item => item.id === itemId));
 
     return (
-        <DndList3TreeDepth2<ChemicalItem>
+        <DndList3TreeDepth2
           parentId={parent.id}
           dndId2="dnd-list-items"
-          items2={items}
+          items2={items.filter(item => item !== undefined) as DraggableItem[]}
           renderItem2={renderChemicalItem}
         />
     );
