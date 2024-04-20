@@ -1,32 +1,26 @@
 import { createContext, PropsWithChildren } from 'react';
 import { useListState, UseListStateHandlers } from '@mantine/hooks';
 
-import { DraggableItem } from './DndList3TreeTypes';
+import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
 
-interface ProviderProps<T> extends PropsWithChildren {
-    depth1: T[],
-    depth2: T[]
+interface ProviderProps extends PropsWithChildren {
+    depth1: DraggableParent[],
+    depth2: DraggableItem[]
 }
 
 export const DndList3Context = createContext(
     {} as {
-        depth1: unknown[], depth1Handlers: UseListStateHandlers<any>,
-        depth2: unknown[], depth2Handlers: UseListStateHandlers<any>
+        depth1: DraggableParent[], depth1Handlers: UseListStateHandlers<DraggableParent>,
+        depth2: DraggableItem[], depth2Handlers: UseListStateHandlers<DraggableItem>
     }
 );
 
-export function DndList3ContextProvider<T extends DraggableItem>(p: ProviderProps<T>) {
-    const [depth1, depth1Handlers] = useListState(p.depth1);
-    const [depth2, depth2Handlers] = useListState(p.depth2);
+export function DndList3ContextProvider(p: ProviderProps) {
+    const [depth1, depth1Handlers] = useListState<DraggableParent>(p.depth1);
+    const [depth2, depth2Handlers] = useListState<DraggableItem>(p.depth2);
 
     return (
-        <DndList3Context.Provider value={{
-            depth1,
-            depth1Handlers,
-            depth2,
-            depth2Handlers,
-        }}
-        >
+        <DndList3Context.Provider value={{ depth1, depth1Handlers, depth2, depth2Handlers }}>
             {p.children}
         </DndList3Context.Provider>
     );

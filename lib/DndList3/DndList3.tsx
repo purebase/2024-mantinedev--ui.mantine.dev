@@ -1,25 +1,25 @@
-import { useContext } from 'react';
 import { Text } from '@mantine/core';
-import { DndList3Context, DndList3ContextProvider } from './DndList3Context';
+import { DndList3ContextProvider } from './DndList3Context';
 import { DndList3TreeDepth2 } from './DndList3TreeDepth2';
 import classes from './DndList3.module.css';
 import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
 import { DndList3Tree } from './DndList3Tree';
 
-export interface ChemicalItem extends DraggableItem {
-    position: number,
-    mass: number,
-    symbol: string
+export interface Category extends DraggableParent {
+    // Feel free to define custom properties
 }
-
-export interface Category extends DraggableParent {}
-
 const categories: Category[] = [
     { id: '1', name: 'Catergory 1', children: ['1', '2', '3'] },
     { id: '2', name: 'Category 2', children: ['4', '5', '6', '7', '8'] },
     { id: '3', name: 'Category 3', children: ['9', '10', '11', '12'] },
 ];
 
+export interface ChemicalItem extends DraggableItem {
+    // Feel free to define custom properties
+    position: number,
+    mass: number,
+    symbol: string
+}
 const chemicalItemList: ChemicalItem[] = [
     { id: '1', position: 39, mass: 88.906, symbol: 'Y', name: 'PAUL' },
     { id: '2', position: 56, mass: 137.33, symbol: 'Ba', name: 'EVA' },
@@ -48,12 +48,10 @@ const renderChemicalItem = (item: DraggableItem) => {
     </>);
 };
 
-export const renderCategory = (parent: DraggableParent) => {
-    const { depth2 } = useContext(DndList3Context);
-
-    const itemsOfParent = depth2 as DraggableItem[];
+export const renderCategory = (parent: DraggableParent, children: DraggableItem[]) => {
     const items = parent.children.map(
-        (itemId) => itemsOfParent.find(item => item.id === itemId));
+        (itemId) => children.find(item => item.id === itemId)
+    );
 
     return (
         <DndList3TreeDepth2
@@ -67,7 +65,7 @@ export const renderCategory = (parent: DraggableParent) => {
 
 export function DndList3() {
     return (
-        <DndList3ContextProvider<DraggableItem> depth1={categories} depth2={chemicalItemList}>
+        <DndList3ContextProvider depth1={categories} depth2={chemicalItemList}>
             <DndList3Tree renderTreeDepth1Items={renderCategory} />
         </DndList3ContextProvider>
     );
