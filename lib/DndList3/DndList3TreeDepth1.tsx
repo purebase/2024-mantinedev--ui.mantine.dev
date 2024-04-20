@@ -2,8 +2,9 @@ import { Draggable, Droppable } from '@hello-pangea/dnd';
 import cx from 'clsx';
 import { useContext } from 'react';
 import classes from './DndList3.module.css';
-import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
 import { DndList3Context } from './DndList3Context';
+
+import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
 
 interface Props<T> {
     dndId1: string,
@@ -12,8 +13,8 @@ interface Props<T> {
 }
 
 export function DndList3TreeDepth1<T extends DraggableParent>(p: Props<T>) {
-    const { depth2 } = useContext(DndList3Context);
-    const itemsOfParent = depth2 as DraggableItem[];
+    const { treeDepth2 } = useContext(DndList3Context);
+    const itemsOfParent = treeDepth2 as DraggableItem[];
 
     return (
         <Droppable droppableId="ROOT" direction="vertical" type="">

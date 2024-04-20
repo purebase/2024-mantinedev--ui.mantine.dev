@@ -2,8 +2,8 @@ import { Text } from '@mantine/core';
 import { DndList3ContextProvider } from './DndList3Context';
 import { DndList3TreeDepth2 } from './DndList3TreeDepth2';
 import classes from './DndList3.module.css';
-import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
 import { DndList3Tree } from './DndList3Tree';
+import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
 
 export interface Category extends DraggableParent {
     // Feel free to define custom properties
@@ -65,7 +65,7 @@ export const renderCategory = (parent: DraggableParent, children: DraggableItem[
 
 export function DndList3() {
     return (
-        <DndList3ContextProvider depth1={categories} depth2={chemicalItemList}>
+        <DndList3ContextProvider treeDepth1={categories} treeDepth2={chemicalItemList}>
             <DndList3Tree renderTreeDepth1Items={renderCategory} />
         </DndList3ContextProvider>
     );

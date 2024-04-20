@@ -8,8 +8,8 @@ interface Props {
     renderTreeDepth1Items: (parent: DraggableParent, children: DraggableItem[]) => JSX.Element
 }
 export function DndList3Tree(p: Props) {
-    const { depth1, depth1Handlers } = useContext(DndList3Context);
-    const depth1Typed = depth1 as DraggableParent[];
+    const { treeDepth1, treeDepth1Handlers } = useContext(DndList3Context);
+    const depth1Typed = treeDepth1 as DraggableParent[];
 
     const dragEnd: OnDragEndResponder = (result => {
         const { source, destination, draggableId } = result;
@@ -23,7 +23,7 @@ export function DndList3Tree(p: Props) {
         }
 
         if (destination.droppableId === 'ROOT') {
-            depth1Handlers.reorder({ from: source.index, to: destination?.index || 0 });
+            treeDepth1Handlers.reorder({ from: source.index, to: destination?.index || 0 });
             return;
         }
 
@@ -52,7 +52,7 @@ export function DndList3Tree(p: Props) {
                 });
 
             //console.log('onDragEnd()#1.2', JSON.stringify(newState, null, 2));
-            depth1Handlers.setState(newState);
+            treeDepth1Handlers.setState(newState);
         } else {
             const startChildIds = [...sourceBox.children];
             // Remember dragged item before deleting it:
@@ -79,7 +79,7 @@ export function DndList3Tree(p: Props) {
                     return currentCategory;
                 });
             //console.log('onDragEnd()#2.2', JSON.stringify(newState, null, 2));
-            depth1Handlers.setState(newState);
+            treeDepth1Handlers.setState(newState);
         }
     });
 
@@ -89,7 +89,7 @@ export function DndList3Tree(p: Props) {
         >
             <DndList3TreeDepth1<DraggableParent>
               dndId1="dnd-list"
-              items1={depth1 as DraggableParent[]}
+              items1={treeDepth1 as DraggableParent[]}
               renderTreeDepth1Items={p.renderTreeDepth1Items}
             />
         </DragDropContext>
