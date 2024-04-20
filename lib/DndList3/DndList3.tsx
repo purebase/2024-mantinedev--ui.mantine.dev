@@ -58,40 +58,40 @@ const renderCategory = (parent: Category) => {
 };
 
 export function DndList3Stage() {
-    const { depth1, depth1Handlers, depth2, depth2Handlers } = useContext(DndList3Context);
+    const { depth1, depth1Handlers } = useContext(DndList3Context);
     const depth1Typed = depth1 as Category[];
-    const depth2Typed = depth2 as ChemicalItem[];
 
     const dragEnd: OnDragEndResponder = (result => {
         const { source, destination, draggableId } = result;
         console.log('onDragEnd()', source, destination, destination?.droppableId, draggableId);
 
-        if (!destination) {
+        if (!destination) return;
+
+        if (destination.droppableId === source.droppableId &&
+            destination.index === source.index) {
             return;
         }
 
-        if (
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        ) {
+        if (destination.droppableId === 'ROOT') {
+            depth1Handlers.reorder({ from: source.index, to: destination?.index || 0 });
             return;
         }
 
-        const start = depth1Typed.find(category => category.id === source.droppableId);
-        const finish = depth1Typed.find(category => category.id === destination.droppableId);
-        if (!start || !finish) return;
+        const sourceBox = depth1Typed.find(category => category.id === source.droppableId);
+        const destinationBox = depth1Typed.find((category) => category.id === destination.droppableId);
+        if (!sourceBox || !destinationBox) return;
 
-        if (start === finish) {
-            const newChildIds = [...start.children];
-            console.log('onDragEnd()#1.1', JSON.stringify(depth1Typed, null, 2));
-            const draggedItem = start.children[source.index];
+        if (sourceBox === destinationBox) {
+            const newChildIds = [...sourceBox.children];
+            //console.log('onDragEnd()#1.1', JSON.stringify(depth1Typed, null, 2));
+            const draggedItem = sourceBox.children[source.index];
 
             // del and add in same child list
             newChildIds.splice(source.index, 1);
             newChildIds.splice(destination.index, 0, draggedItem);
 
             const newCategory = {
-                ...start,
+                ...sourceBox,
                 children: newChildIds,
             };
 
@@ -101,37 +101,36 @@ export function DndList3Stage() {
                     return currentCategory;
                 });
 
-            console.log('onDragEnd()#1.2', JSON.stringify(newState, null, 2));
+            //console.log('onDragEnd()#1.2', JSON.stringify(newState, null, 2));
             depth1Handlers.setState(newState);
-            return;
+        } else {
+            const startChildIds = [...sourceBox.children];
+            // Remember dragged item before deleting it:
+            const draggedItem = sourceBox.children[source.index];
+            // del in sourceBox child list:
+            startChildIds.splice(source.index, 1);
+            const startCategory = {
+                ...sourceBox,
+                children: startChildIds,
+            };
+
+            const destinationChildIds = [...destinationBox.children];
+            // del in sourceBox child list:
+            destinationChildIds.splice(destination.index, 0, draggedItem);
+            const finishCategory = {
+                ...destinationBox,
+                children: destinationChildIds,
+            };
+
+            const newState = depth1Typed
+                .map(currentCategory => {
+                    if (currentCategory.id === startCategory.id) return startCategory;
+                    if (currentCategory.id === finishCategory.id) return finishCategory;
+                    return currentCategory;
+                });
+            //console.log('onDragEnd()#2.2', JSON.stringify(newState, null, 2));
+            depth1Handlers.setState(newState);
         }
-
-        const startChildIds = [...start.children];
-        // Remember dragged item before deleting it:
-        const draggedItem = start.children[source.index];
-        // del in start child list:
-        startChildIds.splice(source.index, 1);
-        const startCategory = {
-            ...start,
-            children: startChildIds,
-        };
-
-        const finishChildIds = [...finish.children];
-        // del in start child list:
-        finishChildIds.splice(destination.index, 0, draggedItem);
-        const finishCategory = {
-            ...finish,
-            children: finishChildIds,
-        };
-
-        const newState = depth1Typed
-            .map(currentCategory => {
-                if (currentCategory.id === startCategory.id) return startCategory;
-                if (currentCategory.id === finishCategory.id) return finishCategory;
-                return currentCategory;
-            });
-        console.log('onDragEnd()#2.2', JSON.stringify(newState, null, 2));
-        depth1Handlers.setState(newState);
     });
 
     return (
