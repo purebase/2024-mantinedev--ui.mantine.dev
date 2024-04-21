@@ -4,15 +4,17 @@ import { useListState, UseListStateHandlers } from '@mantine/hooks';
 import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
 
 interface ProviderProps extends PropsWithChildren {
-    treeDepth1: { data: DraggableParent[], renderList: (parent: DraggableParent, children: DraggableItem[]) => JSX.Element },
-    treeDepth2: { data: DraggableItem[] }
+    treeDepth1: { data: DraggableParent[], renderItem: (parent: DraggableParent) => JSX.Element },
+    treeDepth2: { data: DraggableItem[], renderItem: (parent: DraggableItem) => JSX.Element }
 }
 
 export const DndList3Context = createContext(
     {} as {
         treeDepth1_data: DraggableParent[], treeDepth1_dataHandlers: UseListStateHandlers<DraggableParent>,
+        treeDepth1_renderItem: (item: DraggableParent) => JSX.Element,
+
         treeDepth2_data: DraggableItem[], treeDepth2_dataHandlers: UseListStateHandlers<DraggableItem>,
-        treeDepth1_renderList: (parent: DraggableParent, children: DraggableItem[]) => JSX.Element
+        treeDepth2_renderItem: (item: DraggableItem) => JSX.Element
     }
 );
 
@@ -22,8 +24,11 @@ export function DndList3ContextProvider(p: ProviderProps) {
 
     return (
         <DndList3Context.Provider value={{
-            treeDepth1_data, treeDepth1_dataHandlers, treeDepth1_renderList: p.treeDepth1.renderList,
+            treeDepth1_data, treeDepth1_dataHandlers,
+            treeDepth1_renderItem: p.treeDepth1.renderItem,
+
             treeDepth2_data, treeDepth2_dataHandlers,
+            treeDepth2_renderItem: p.treeDepth2.renderItem,
         }}
         >
             {p.children}

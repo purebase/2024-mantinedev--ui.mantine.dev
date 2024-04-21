@@ -1,6 +1,5 @@
 import { Text } from '@mantine/core';
 import { DndList3ContextProvider } from './DndList3Context';
-import { DndList3TreeDepth2 } from './DndList3TreeDepth2';
 import classes from './DndList3.module.css';
 import { DndList3Tree } from './DndList3Tree';
 import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
@@ -35,6 +34,14 @@ const chemicalItemList: ChemicalItem[] = [
     { id: '12', position: 6, mass: 12.011, symbol: 'C', name: 'WILMAR' },
 ];
 
+const depth1_renderItem = (item: DraggableParent) => {
+    // Feel free to define the item style:
+    const category = item as Category;
+    return (
+        <Text color="#ff0000">{category.name}</Text>
+    );
+};
+
 const depth2_renderItem = (item: DraggableItem) => {
     // Feel free to define the item style:
     const chemicalItem = item as ChemicalItem;
@@ -50,29 +57,12 @@ const depth2_renderItem = (item: DraggableItem) => {
     </>);
 };
 
-// TODO This is an internal method - better exclude css or containers:
-export const depth1_renderList = (parent: DraggableParent, children: DraggableItem[]) => {
-    const items = parent.children.map(
-        (itemId) => children.find(item => item.id === itemId)
-    );
-    return (
-    <>
-        {parent.name}
-        <DndList3TreeDepth2
-          parentId={parent.id}
-          items={items.filter(item => item !== undefined) as DraggableItem[]}
-          renderItem={depth2_renderItem}
-        />
-    </>
-    );
-};
-
 export function DndList3() {
     // TODO Use context also for methods:
     return (
         <DndList3ContextProvider
-          treeDepth1={{ data: categories, renderList: depth1_renderList }}
-          treeDepth2={{ data: chemicalItemList }}
+          treeDepth1={{ data: categories, renderItem: depth1_renderItem }}
+          treeDepth2={{ data: chemicalItemList, renderItem: depth2_renderItem }}
         >
             <DndList3Tree />
         </DndList3ContextProvider>
