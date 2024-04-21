@@ -10,7 +10,6 @@ export function DndList3Tree() {
 
     const dragEnd: OnDragEndResponder = (result => {
         const { source, destination, draggableId } = result;
-        console.log('onDragEnd()', source, destination, destination?.droppableId, draggableId);
 
         if (!destination) return;
 
@@ -30,7 +29,6 @@ export function DndList3Tree() {
 
         if (sourceBox === destinationBox) {
             const newChildIds = [...sourceBox.children];
-            //console.log('onDragEnd()#1.1', JSON.stringify(depth1Typed, null, 2));
             const draggedItem = sourceBox.children[source.index];
 
             // del and add in same child list
@@ -48,7 +46,6 @@ export function DndList3Tree() {
                     return currentCategory;
                 });
 
-            //console.log('onDragEnd()#1.2', JSON.stringify(newState, null, 2));
             treeDepth1_dataHandlers.setState(newState);
         } else {
             const startChildIds = [...sourceBox.children];
@@ -75,7 +72,6 @@ export function DndList3Tree() {
                     if (currentCategory.id === finishCategory.id) return finishCategory;
                     return currentCategory;
                 });
-            //console.log('onDragEnd()#2.2', JSON.stringify(newState, null, 2));
             treeDepth1_dataHandlers.setState(newState);
         }
     });

@@ -1,6 +1,7 @@
 .depth1boxv {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .depth1boxh {
   display: flex;
@@ -27,6 +28,7 @@
 .depth2boxitem {
   display: flex;
   align-items: center;
+  width: 12rem;
   border-radius: var(--mantine-radius-md);
   border: rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
   padding: var(--mantine-spacing-sm) var(--mantine-spacing-xl);
