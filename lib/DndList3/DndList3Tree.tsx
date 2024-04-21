@@ -2,14 +2,11 @@ import { DragDropContext, OnDragEndResponder } from '@hello-pangea/dnd';
 import { useContext } from 'react';
 import { DndList3Context } from './DndList3Context';
 import { DndList3TreeDepth1 } from './DndList3TreeDepth1';
-import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
+import { DraggableParent } from './DndList3TreeTypes';
 
-interface Props {
-    renderTreeDepth1ItemList: (parent: DraggableParent, children: DraggableItem[]) => JSX.Element
-}
-export function DndList3Tree(p: Props) {
-    const { treeDepth1, treeDepth1Handlers } = useContext(DndList3Context);
-    const depth1Typed = treeDepth1 as DraggableParent[];
+export function DndList3Tree() {
+    const { treeDepth1_data, treeDepth1_dataHandlers } = useContext(DndList3Context);
+    const depth1Typed = treeDepth1_data as DraggableParent[];
 
     const dragEnd: OnDragEndResponder = (result => {
         const { source, destination, draggableId } = result;
@@ -23,7 +20,7 @@ export function DndList3Tree(p: Props) {
         }
 
         if (destination.droppableId === 'ROOT') {
-            treeDepth1Handlers.reorder({ from: source.index, to: destination?.index || 0 });
+            treeDepth1_dataHandlers.reorder({ from: source.index, to: destination?.index || 0 });
             return;
         }
 
@@ -52,7 +49,7 @@ export function DndList3Tree(p: Props) {
                 });
 
             //console.log('onDragEnd()#1.2', JSON.stringify(newState, null, 2));
-            treeDepth1Handlers.setState(newState);
+            treeDepth1_dataHandlers.setState(newState);
         } else {
             const startChildIds = [...sourceBox.children];
             // Remember dragged item before deleting it:
@@ -79,7 +76,7 @@ export function DndList3Tree(p: Props) {
                     return currentCategory;
                 });
             //console.log('onDragEnd()#2.2', JSON.stringify(newState, null, 2));
-            treeDepth1Handlers.setState(newState);
+            treeDepth1_dataHandlers.setState(newState);
         }
     });
 
@@ -88,8 +85,7 @@ export function DndList3Tree(p: Props) {
           onDragEnd={dragEnd}
         >
             <DndList3TreeDepth1
-              items={treeDepth1 as DraggableParent[]}
-              renderTreeDepth1ItemList={p.renderTreeDepth1ItemList}
+              items={treeDepth1_data as DraggableParent[]}
             />
         </DragDropContext>
     );
