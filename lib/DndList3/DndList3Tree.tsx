@@ -5,7 +5,7 @@ import { DndList3TreeDepth1 } from './DndList3TreeDepth1';
 import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
 
 interface Props {
-    renderTreeDepth1Items: (parent: DraggableParent, children: DraggableItem[]) => JSX.Element
+    renderTreeDepth1ItemList: (parent: DraggableParent, children: DraggableItem[]) => JSX.Element
 }
 export function DndList3Tree(p: Props) {
     const { treeDepth1, treeDepth1Handlers } = useContext(DndList3Context);
@@ -87,10 +87,9 @@ export function DndList3Tree(p: Props) {
         <DragDropContext
           onDragEnd={dragEnd}
         >
-            <DndList3TreeDepth1<DraggableParent>
-              dndId1="dnd-list"
-              items1={treeDepth1 as DraggableParent[]}
-              renderTreeDepth1Items={p.renderTreeDepth1Items}
+            <DndList3TreeDepth1
+              items={treeDepth1 as DraggableParent[]}
+              renderTreeDepth1ItemList={p.renderTreeDepth1ItemList}
             />
         </DragDropContext>
     );

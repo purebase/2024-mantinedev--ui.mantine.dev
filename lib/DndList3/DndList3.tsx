@@ -14,8 +14,8 @@ const categories: Category[] = [
     { id: '3', name: 'Category 3', children: ['9', '10', '11', '12'] },
 ];
 
+// Feel free to define custom properties
 export interface ChemicalItem extends DraggableItem {
-    // Feel free to define custom properties
     position: number,
     mass: number,
     symbol: string
@@ -34,7 +34,9 @@ const chemicalItemList: ChemicalItem[] = [
     { id: '11', position: 58, mass: 140.12, symbol: 'Ce', name: 'DANI' },
     { id: '12', position: 6, mass: 12.011, symbol: 'C', name: 'WILMAR' },
 ];
-const renderChemicalItem = (item: DraggableItem) => {
+
+const renderTreeDepth2Item = (item: DraggableItem) => {
+    // Feel free to define the item style:
     const chemicalItem = item as ChemicalItem;
     return (
     <>
@@ -48,25 +50,28 @@ const renderChemicalItem = (item: DraggableItem) => {
     </>);
 };
 
-export const renderCategory = (parent: DraggableParent, children: DraggableItem[]) => {
+// TODO This is an internal method - better exclude css or containers:
+export const renderTreeDepth1ItemList = (parent: DraggableParent, children: DraggableItem[]) => {
     const items = parent.children.map(
         (itemId) => children.find(item => item.id === itemId)
     );
-
     return (
+    <>
+        {parent.name}
         <DndList3TreeDepth2
           parentId={parent.id}
-          dndId2="dnd-list-items"
-          items2={items.filter(item => item !== undefined) as DraggableItem[]}
-          renderItem2={renderChemicalItem}
+          items={items.filter(item => item !== undefined) as DraggableItem[]}
+          renderItem={renderTreeDepth2Item}
         />
+    </>
     );
 };
 
 export function DndList3() {
+    // TODO Use context also for methods:
     return (
         <DndList3ContextProvider treeDepth1={categories} treeDepth2={chemicalItemList}>
-            <DndList3Tree renderTreeDepth1Items={renderCategory} />
+            <DndList3Tree renderTreeDepth1ItemList={renderTreeDepth1ItemList} />
         </DndList3ContextProvider>
     );
 }
