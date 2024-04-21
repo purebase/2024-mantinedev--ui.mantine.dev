@@ -84,9 +84,7 @@ export function DndList3Tree() {
         <DragDropContext
           onDragEnd={dragEnd}
         >
-            <DndList3TreeDepth1
-              items={treeDepth1_data as DraggableParent[]}
-            />
+            <DndList3TreeDepth1 />
         </DragDropContext>
     );
 }

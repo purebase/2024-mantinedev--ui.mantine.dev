@@ -6,3 +6,5 @@ export interface DraggableItem {
 export interface DraggableParent extends DraggableItem {
     children: string[]
 }
+
+export type DndDirection = 'vertical' | 'horizontal';

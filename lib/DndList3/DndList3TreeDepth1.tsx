@@ -7,12 +7,8 @@ import { DndList3Context } from './DndList3Context';
 import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
 import { DndList3TreeDepth2 } from './DndList3TreeDepth2';
 
-interface Props {
-    items: Array<DraggableParent>
-}
-
-export function DndList3TreeDepth1(p: Props) {
-    const { treeDepth1_renderItem, treeDepth2_data, treeDepth2_renderItem } = useContext(DndList3Context);
+export function DndList3TreeDepth1() {
+    const { treeDepth1_data, treeDepth1_renderItem, treeDepth2_data, treeDepth1_direction } = useContext(DndList3Context);
 
     const processItem = (item: DraggableParent, index: number) => {
         const childItems = item.children.map(
@@ -33,7 +29,6 @@ export function DndList3TreeDepth1(p: Props) {
                         <DndList3TreeDepth2
                           parentId={item.id}
                           items={childItems}
-                          renderItem={treeDepth2_renderItem}
                         />
                     </li>
                 )}
@@ -41,11 +36,12 @@ export function DndList3TreeDepth1(p: Props) {
         );
     };
 
+    const classname = (treeDepth1_direction === 'vertical') ? classes.depth1boxv : classes.depth1boxh;
     return (
-        <Droppable droppableId="ROOT" direction="vertical" type="">
+        <Droppable droppableId="ROOT" direction={treeDepth1_direction} type="">
             {(drop1Provider) => (
-                <ul ref={drop1Provider.innerRef} className={classes.depth1box}>
-                    {p.items.map(processItem)}
+                <ul ref={drop1Provider.innerRef} className={classname}>
+                    {treeDepth1_data.map(processItem)}
                     {drop1Provider.placeholder}
                 </ul>
             )}

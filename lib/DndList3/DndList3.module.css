@@ -1,4 +1,11 @@
-.depth1box {}
+.depth1boxv {
+  display: flex;
+  flex-direction: column;
+}
+.depth1boxh {
+  display: flex;
+  flex-direction: row;
+}
 .depth1boxitem {
   display: flex;
   align-items: center;
@@ -9,7 +16,14 @@
   margin-bottom: var(--mantine-spacing-sm);
 }
 
-.depth2box {}
+.depth2boxv {
+  display: flex;
+  flex-direction: column;
+}
+.depth2boxh {
+  display: flex;
+  flex-direction: row;
+}
 .depth2boxitem {
   display: flex;
   align-items: center;

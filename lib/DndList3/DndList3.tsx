@@ -4,6 +4,7 @@ import classes from './DndList3.module.css';
 import { DndList3Tree } from './DndList3Tree';
 import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
 
+// TODO rename to team
 export interface Category extends DraggableParent {
     // Feel free to define custom properties
 }
@@ -13,8 +14,9 @@ const categories: Category[] = [
     { id: '3', name: 'Category 3', children: ['9', '10', '11', '12'] },
 ];
 
-// Feel free to define custom properties
+// TODO rename to player
 export interface ChemicalItem extends DraggableItem {
+    // Feel free to define custom properties
     position: number,
     mass: number,
     symbol: string
@@ -61,8 +63,8 @@ export function DndList3() {
     // TODO Use context also for methods:
     return (
         <DndList3ContextProvider
-          treeDepth1={{ data: categories, renderItem: depth1_renderItem }}
-          treeDepth2={{ data: chemicalItemList, renderItem: depth2_renderItem }}
+          treeDepth1={{ data: categories, renderItem: depth1_renderItem, direction: 'vertical' }}
+          treeDepth2={{ data: chemicalItemList, renderItem: depth2_renderItem, direction: 'horizontal' }}
         >
             <DndList3Tree />
         </DndList3ContextProvider>
