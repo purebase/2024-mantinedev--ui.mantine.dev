@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import classes from './DndList2.module.css';
 // eslint-disable-next-line import/no-cycle
 import { DndList2GenericComp } from './DndList2GenericComp';
-import { ChemicalStore } from './DndList2Zustand';
+import { ChemicalItemsStore } from './DndList2Zustand';
 
 interface ChemicalItem {
   id: string, position: number, mass: number, symbol: string, name: string
@@ -17,7 +17,7 @@ const data: ChemicalItem[] = [
     { id: '5', position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
 ];
 
-export const useChemicalItemStore = create<ChemicalStore>((setState) => ({
+export const useChemicalItemStore = create<ChemicalItemsStore>((setState) => ({
     items: data,
     setItems: (items) => setState({ items }),
 }));

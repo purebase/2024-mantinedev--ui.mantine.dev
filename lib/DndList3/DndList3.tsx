@@ -1,8 +1,9 @@
 import { Text } from '@mantine/core';
+import { create } from 'zustand';
 import { DndList3ContextProvider } from './DndList3Context';
 import classes from './DndList3.module.css';
 import { DndList3Tree } from './DndList3Tree';
-import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
+import { DndDirection, DraggableItem, DraggableParent } from './DndList3TreeTypes';
 
 export interface Team extends DraggableParent {
     // Feel free to define custom properties
@@ -12,6 +13,12 @@ const teamList: Team[] = [
     { id: '3', name: 'Hockey', children: ['9', '10', '11', '12'] },
     { id: '2', name: 'Rugby', children: ['4', '5', '6', '7', '8'] },
 ];
+
+interface TeamStore {
+    items: Team[], setItems: (items: Team[]) => void,
+    direction: DndDirection,
+    renderItem: (parent: DraggableParent) => JSX.Element
+}
 
 export interface Player extends DraggableItem {
     // Feel free to define custom properties
@@ -33,6 +40,13 @@ const playerList: Player[] = [
     { id: '11', age: 58, mass: 140.12, symbol: '11', name: 'DANI' },
     { id: '12', age: 6, mass: 12.011, symbol: '12', name: 'WILMAR' },
 ];
+
+interface PlayerStore {
+    items: Player[],
+    setItems: (items: Player[]) => void,
+    direction: DndDirection,
+    renderItem: (parent: DraggableParent) => JSX.Element
+}
 
 const depth1_renderItem = (item: DraggableParent) => {
     // Feel free to define the item style:
@@ -56,6 +70,19 @@ const depth2_renderItem = (item: DraggableItem) => {
         </div>
     </>);
 };
+
+export const useTeamStore = create<TeamStore>((setState) => ({
+    items: teamList, setItems: (items) => setState({ items }),
+    direction: 'vertical',
+    renderItem: depth1_renderItem,
+}));
+
+export const usePlayerStore = create<PlayerStore>((setState) => ({
+    items: playerList,
+    setItems: (items) => setState({ items }),
+    direction: 'horizontal',
+    renderItem: depth2_renderItem
+}));
 
 export function DndList3() {
     return (

@@ -6,7 +6,7 @@ export interface ChemicalItem {
   name: string;
 }
 
-export interface ChemicalStore {
+export interface ChemicalItemsStore {
   items: ChemicalItem[];
   setItems: (items: ChemicalItem[]) => void;
 }
