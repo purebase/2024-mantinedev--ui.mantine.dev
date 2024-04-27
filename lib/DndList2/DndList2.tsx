@@ -1,13 +1,10 @@
 import { Text } from '@mantine/core';
 import classes from './DndList2.module.css';
+// eslint-disable-next-line import/no-cycle
 import { DndList2GenericComp } from './DndList2GenericComp';
 
-export interface DraggableItem {
-  id: string
-}
-
-interface ChemicalItem extends DraggableItem {
-  position: number, mass: number, symbol: string, name: string
+interface ChemicalItem {
+  id: string, position: number, mass: number, symbol: string, name: string
 }
 
 const data: ChemicalItem[] = [
@@ -31,5 +28,9 @@ const renderItem = (item: ChemicalItem) => (
 );
 
 export function DndList2() {
-    return <DndList2GenericComp<ChemicalItem> data={data} renderItem={renderItem} />;
+    return <DndList2GenericComp<ChemicalItem>
+      data={data}
+      renderItem={renderItem}
+      getItemId={(index) => data[index].id}
+    />;
 }
