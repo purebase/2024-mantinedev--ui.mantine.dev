@@ -8,6 +8,7 @@ module.exports = {
     'import/extensions': 'off',
     'max-len': 'off',
     'object-property-newline': 'off',
-    'import/no-cycle': 'off'
+    'import/no-cycle': 'off',
+    'comma-dangle': 'off'
   },
 };
