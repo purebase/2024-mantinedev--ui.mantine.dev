@@ -2,7 +2,7 @@ import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import cx from 'clsx';
 import { useEffect } from 'react';
 import { create } from 'zustand';
-import classes from './DndList2.module.css';
+import classes from './DndListReusable.module.css';
 
 function reorderList({ current, from, to }: { current: any[], from: number; to: number }) {
     const cloned = [...current];
@@ -34,7 +34,7 @@ export const useDraggableItemStore = create<DraggableItemStore>((setState) => ({
     items: [], setItems: (items) => setState({ items }),
 }));
 
-export function DndList2GenericComp<T>(p: Props<T>) {
+export function DndListReusableComponent<T>(p: Props<T>) {
     const depth1Store = useDraggableItemStore();
 
     useEffect(() => {

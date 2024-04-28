@@ -1,6 +1,6 @@
 import { Text } from '@mantine/core';
-import classes from './DndList2.module.css';
-import { DndList2GenericComp } from './DndList2GenericComp';
+import classes from './DndListReusable.module.css';
+import { DndListReusableComponent } from './DndListReusableComponent';
 
 interface ChemicalItem {
   id: string, position: number, mass: number, symbol: string, name: string
@@ -14,8 +14,8 @@ const data: ChemicalItem[] = [
     { id: '5', position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
 ];
 
-export function DndList2() {
-    return <DndList2GenericComp<ChemicalItem>
+export function DndListReusable() {
+    return <DndListReusableComponent<ChemicalItem>
       content={data}
       getItemId={(index) => data[index].id}
       renderItem={(item: ChemicalItem) => (
