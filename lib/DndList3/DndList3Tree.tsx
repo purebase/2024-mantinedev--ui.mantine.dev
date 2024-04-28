@@ -1,15 +1,26 @@
 import { DragDropContext, OnDragEndResponder } from '@hello-pangea/dnd';
-import { useContext } from 'react';
-import { DndList3Context } from './DndList3Context';
 import { DndList3TreeDepth1 } from './DndList3TreeDepth1';
 import { DraggableParent } from './DndList3TreeTypes';
+import { useDndDepth1Store } from './DndList3';
+
+function reorderList({ current, from, to }: { current: any[], from: number; to: number }) {
+    const cloned = [...current];
+    const item = current[from];
+
+    cloned.splice(from, 1);
+    cloned.splice(to, 0, item);
+
+    return cloned;
+}
 
 export function DndList3Tree() {
-    const { treeDepth1_data, treeDepth1_dataHandlers } = useContext(DndList3Context);
-    const depth1Typed = treeDepth1_data as DraggableParent[];
+    //const { treeDepth1_data, treeDepth1_dataHandlers } = useContext(DndList3Context);
+    const depth1Store = useDndDepth1Store();
+
+    const depth1Typed = depth1Store.items as DraggableParent[];
 
     const dragEnd: OnDragEndResponder = (result => {
-        const { source, destination, draggableId } = result;
+        const { source, destination } = result;
 
         if (!destination) return;
 
@@ -19,7 +30,8 @@ export function DndList3Tree() {
         }
 
         if (destination.droppableId === 'ROOT') {
-            treeDepth1_dataHandlers.reorder({ from: source.index, to: destination?.index || 0 });
+            const newState = reorderList({ current: depth1Store.items, from: source.index, to: destination?.index || 0 });
+            depth1Store.setItems(newState);
             return;
         }
 
@@ -46,7 +58,7 @@ export function DndList3Tree() {
                     return currentCategory;
                 });
 
-            treeDepth1_dataHandlers.setState(newState);
+            depth1Store.setItems(newState);
         } else {
             const startChildIds = [...sourceBox.children];
             // Remember dragged item before deleting it:
@@ -72,7 +84,7 @@ export function DndList3Tree() {
                     if (currentCategory.id === finishCategory.id) return finishCategory;
                     return currentCategory;
                 });
-            treeDepth1_dataHandlers.setState(newState);
+            depth1Store.setItems(newState);
         }
     });
 

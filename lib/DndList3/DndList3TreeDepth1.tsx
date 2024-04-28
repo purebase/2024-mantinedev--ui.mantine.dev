@@ -1,18 +1,19 @@
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import cx from 'clsx';
-import { useContext } from 'react';
 import classes from './DndList3.module.css';
-import { DndList3Context } from './DndList3Context';
 
 import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
 import { DndList3TreeDepth2 } from './DndList3TreeDepth2';
+import { useDndDepth2Store, useDndDepth1Store } from './DndList3';
 
 export function DndList3TreeDepth1() {
-    const { treeDepth1_data, treeDepth1_renderItem, treeDepth2_data, treeDepth1_direction } = useContext(DndList3Context);
+    //const { treeDepth1_data, treeDepth1_renderItem, treeDepth2_data, treeDepth1_direction } = useContext(DndList3Context);
+    const depth1Store = useDndDepth1Store();
+    const depth2Store = useDndDepth2Store();
 
     const processItem = (item: DraggableParent, index: number) => {
         const childItems = item.children.map(
-            (itemId) => treeDepth2_data.find(itemDepth2 => itemDepth2.id === itemId)
+            (itemId) => depth2Store.items.find(itemDepth2 => itemDepth2.id === itemId)
         ).filter(itemDepth2 => itemDepth2 !== undefined) as DraggableItem[];
 
         return (
@@ -24,7 +25,7 @@ export function DndList3TreeDepth1() {
                       {...drag1Provider.dragHandleProps}
                       ref={drag1Provider.innerRef}
                     >
-                        {treeDepth1_renderItem(item)}
+                        {depth1Store.renderItem(item)}
 
                         <DndList3TreeDepth2
                           parentId={item.id}
@@ -36,12 +37,12 @@ export function DndList3TreeDepth1() {
         );
     };
 
-    const classname = (treeDepth1_direction === 'vertical') ? classes.depth1boxv : classes.depth1boxh;
+    const classname = (depth1Store.direction === 'vertical') ? classes.depth1boxv : classes.depth1boxh;
     return (
-        <Droppable droppableId="ROOT" direction={treeDepth1_direction} type="">
+        <Droppable droppableId="ROOT" direction={depth1Store.direction} type="">
             {(drop1Provider) => (
                 <ul ref={drop1Provider.innerRef} className={classname}>
-                    {treeDepth1_data.map(processItem)}
+                    {depth1Store.items.map(processItem)}
                     {drop1Provider.placeholder}
                 </ul>
             )}

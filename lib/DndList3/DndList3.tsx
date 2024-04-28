@@ -1,6 +1,5 @@
 import { Text } from '@mantine/core';
 import { create } from 'zustand';
-import { DndList3ContextProvider } from './DndList3Context';
 import classes from './DndList3.module.css';
 import { DndList3Tree } from './DndList3Tree';
 import { DndDirection, DraggableItem, DraggableParent } from './DndList3TreeTypes';
@@ -14,10 +13,10 @@ const teamList: Team[] = [
     { id: '2', name: 'Rugby', children: ['4', '5', '6', '7', '8'] },
 ];
 
-interface TeamStore {
-    items: Team[], setItems: (items: Team[]) => void,
+interface DndLayerStore<T> {
+    items: T[], setItems: (items: T[]) => void,
     direction: DndDirection,
-    renderItem: (parent: DraggableParent) => JSX.Element
+    renderItem: (parent: DraggableItem) => JSX.Element
 }
 
 export interface Player extends DraggableItem {
@@ -41,14 +40,7 @@ const playerList: Player[] = [
     { id: '12', age: 6, mass: 12.011, symbol: '12', name: 'WILMAR' },
 ];
 
-interface PlayerStore {
-    items: Player[],
-    setItems: (items: Player[]) => void,
-    direction: DndDirection,
-    renderItem: (parent: DraggableParent) => JSX.Element
-}
-
-const depth1_renderItem = (item: DraggableParent) => {
+const depth1_renderItem = (item: DraggableItem) => {
     // Feel free to define the item style:
     const team = item as Team;
     return (
@@ -71,26 +63,21 @@ const depth2_renderItem = (item: DraggableItem) => {
     </>);
 };
 
-export const useTeamStore = create<TeamStore>((setState) => ({
+export const useDndDepth1Store = create<DndLayerStore<Team>>((setState) => ({
     items: teamList, setItems: (items) => setState({ items }),
     direction: 'vertical',
     renderItem: depth1_renderItem,
 }));
 
-export const usePlayerStore = create<PlayerStore>((setState) => ({
+export const useDndDepth2Store = create<DndLayerStore<Player>>((setState) => ({
     items: playerList,
     setItems: (items) => setState({ items }),
     direction: 'horizontal',
-    renderItem: depth2_renderItem
+    renderItem: depth2_renderItem,
 }));
 
 export function DndList3() {
     return (
-        <DndList3ContextProvider
-          treeDepth1={{ data: teamList, renderItem: depth1_renderItem, direction: 'horizontal' }}
-          treeDepth2={{ data: playerList, renderItem: depth2_renderItem, direction: 'vertical' }}
-        >
-            <DndList3Tree />
-        </DndList3ContextProvider>
+        <DndList3Tree />
     );
 }
