@@ -14,8 +14,8 @@ export interface AxisSettingsProps<T> {
     renderItem: (item: T) => JSX.Element
 }
 
-export interface AxisProps {
-    data: DraggableParent[] | DraggableItem[],
+export interface AxisProps<T> {
+    data: T[],
     settings: AxisSettingsProps<unknown>
 }
 

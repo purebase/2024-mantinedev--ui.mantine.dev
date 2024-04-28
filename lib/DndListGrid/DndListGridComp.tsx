@@ -13,11 +13,9 @@ export const useDndGridAxis2Store = create<DndGridAxisStore<DraggableItem>>((set
     items: [], setItems: (items) => setState({ items }),
 }));
 
-export function DndListGridComp(p: { axis1: AxisProps, axis2: AxisProps }) {
+export function DndListGridComp(p: { axis1: AxisProps<DraggableParent>, axis2: AxisProps<DraggableItem> }) {
     const axis1Store = useDndGridAxis1Store();
     const axis2Store = useDndGridAxis2Store();
-
-    const depth1Typed = axis1Store.items as DraggableParent[];
 
     useEffect(() => {
         if (p.axis1.data) axis1Store.setItems(p.axis1.data as DraggableParent[]);
@@ -40,8 +38,8 @@ export function DndListGridComp(p: { axis1: AxisProps, axis2: AxisProps }) {
             return;
         }
 
-        const sourceBox = depth1Typed.find(category => category.id === source.droppableId);
-        const destinationBox = depth1Typed.find((category) => category.id === destination.droppableId);
+        const sourceBox = axis1Store.items.find(category => category.id === source.droppableId);
+        const destinationBox = axis1Store.items.find((category) => category.id === destination.droppableId);
         if (!sourceBox || !destinationBox) return;
 
         if (sourceBox === destinationBox) {
@@ -57,7 +55,7 @@ export function DndListGridComp(p: { axis1: AxisProps, axis2: AxisProps }) {
                 children: newChildIds,
             };
 
-            const newState = depth1Typed
+            const newState = axis1Store.items
                 .map(currentCategory => {
                     if (currentCategory.id === newCategory.id) return newCategory;
                     return currentCategory;
@@ -83,7 +81,7 @@ export function DndListGridComp(p: { axis1: AxisProps, axis2: AxisProps }) {
                 children: destinationChildIds,
             };
 
-            const newState = depth1Typed
+            const newState = axis1Store.items
                 .map(currentCategory => {
                     if (currentCategory.id === startCategory.id) return startCategory;
                     if (currentCategory.id === finishCategory.id) return finishCategory;
