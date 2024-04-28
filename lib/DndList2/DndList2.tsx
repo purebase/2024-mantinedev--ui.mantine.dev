@@ -14,22 +14,20 @@ const data: ChemicalItem[] = [
     { id: '5', position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
 ];
 
-const renderItem = (item: ChemicalItem) => (
-    <>
-      <Text className={classes.symbol}>{item.symbol}</Text>
-      <div>
-        <Text>{item.name}</Text>
-        <Text c="dimmed" size="sm">
-          Position: {item.position} • Mass: {item.mass}
-        </Text>
-      </div>
-    </>
-);
-
 export function DndList2() {
     return <DndList2GenericComp<ChemicalItem>
       content={data}
-      renderItem={renderItem}
       getItemId={(index) => data[index].id}
+      renderItem={(item: ChemicalItem) => (
+          <>
+              <Text className={classes.symbol}>{item.symbol}</Text>
+              <div>
+                  <Text>{item.name}</Text>
+                  <Text c="dimmed" size="sm">
+                      Position: {item.position} • Mass: {item.mass}
+                  </Text>
+              </div>
+          </>
+      )}
     />;
 }
