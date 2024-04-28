@@ -6,7 +6,7 @@ import { AxisSettingsProps, DraggableItem } from './DndListGridCompTypes';
 interface Props {
     parentId: string,
     items: Array<DraggableItem>,
-    axis2Settings: AxisSettingsProps<unknown>
+    axis2Settings: AxisSettingsProps<DraggableItem>
 }
 
 export function DndListGridCompAxis2(p: Props) {

@@ -5,7 +5,7 @@ import { AxisSettingsProps, DraggableItem, DraggableParent } from './DndListGrid
 import { useDndGridAxis1Store, useDndGridAxis2Store } from './DndListGridComp';
 import { DndListGridCompAxis2 } from './DndListGridCompAxis2';
 
-export function DndListGridCompAxis1(p: { axis1Settings: AxisSettingsProps<unknown>, axis2Settings: AxisSettingsProps<unknown> }) {
+export function DndListGridCompAxis1(p: { axis1Settings: AxisSettingsProps<DraggableParent>, axis2Settings: AxisSettingsProps<DraggableItem> }) {
     const axis1Store = useDndGridAxis1Store();
     const axis2Store = useDndGridAxis2Store();
 

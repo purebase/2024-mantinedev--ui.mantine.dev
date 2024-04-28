@@ -14,9 +14,10 @@ export interface AxisSettingsProps<T> {
     renderItem: (item: T) => JSX.Element
 }
 
+// HINT The generic type will be used for conditional typing in future
 export interface AxisProps<T> {
     data: T[],
-    settings: AxisSettingsProps<unknown>
+    settings: AxisSettingsProps<T>
 }
 
 export interface DndGridAxisStore<T> {
