@@ -1,5 +1,5 @@
 {
-  "title": "Drag'n'drop cascaded lists",
+  "title": "Drag'n'drop grid as resuable component",
   "category": "dnd",
   "canvas": {
     "center": false

@@ -1,18 +1,18 @@
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import cx from 'clsx';
-import classes from './DndList3.module.css';
+import classes from './DndListGrid.module.css';
 
-import { useDndDepth2Store } from './DndList3';
+import { useDndGridAxis2Store } from './DndListGrid';
 
-import { DraggableItem } from './DndList3TreeTypes';
+import { DraggableItem } from './DndListGridCompTypes';
 
 interface Props {
     parentId: string,
     items: Array<DraggableItem>
 }
 
-export function DndList3TreeDepth2(p: Props) {
-    const depth2Store = useDndDepth2Store();
+export function DndListGridCompAxis2(p: Props) {
+    const depth2Store = useDndGridAxis2Store();
 
     const processItem = (item: DraggableItem, index: number) => (
             <Draggable key={item.id} index={index} draggableId={`${item.id}`}>

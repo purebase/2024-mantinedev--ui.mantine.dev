@@ -1,9 +1,9 @@
 import attributes from './attributes.json';
 import { StoryWrapper } from '../../components/StoryWrapper/StoryWrapper';
-import { DndList3 } from './DndList3';
+import { DndListGrid } from './DndListGrid';
 
 export default { title: 'DndList3' };
 
 export function Usage() {
-  return <StoryWrapper attributes={attributes} component={DndList3} />;
+  return <StoryWrapper attributes={attributes} component={DndListGrid} />;
 }

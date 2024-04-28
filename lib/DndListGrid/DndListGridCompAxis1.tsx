@@ -1,15 +1,15 @@
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import cx from 'clsx';
-import classes from './DndList3.module.css';
+import classes from './DndListGrid.module.css';
 
-import { DndList3TreeDepth2 } from './DndList3TreeDepth2';
-import { useDndDepth2Store, useDndDepth1Store } from './DndList3';
+import { DndListGridCompAxis2 } from './DndListGridCompAxis2';
+import { useDndGridAxis2Store, useDndGridAxis1Store } from './DndListGrid';
 
-import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
+import { DraggableItem, DraggableParent } from './DndListGridCompTypes';
 
-export function DndList3TreeDepth1() {
-    const depth1Store = useDndDepth1Store();
-    const depth2Store = useDndDepth2Store();
+export function DndListGridCompAxis1() {
+    const depth1Store = useDndGridAxis1Store();
+    const depth2Store = useDndGridAxis2Store();
 
     const processItem = (item: DraggableParent, index: number) => {
         const childItems = item.children.map(
@@ -27,7 +27,7 @@ export function DndList3TreeDepth1() {
                     >
                         {depth1Store.renderItem(item)}
 
-                        <DndList3TreeDepth2
+                        <DndListGridCompAxis2
                           parentId={item.id}
                           items={childItems}
                         />

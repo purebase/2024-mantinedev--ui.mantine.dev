@@ -1,11 +1,11 @@
 import { DragDropContext, OnDragEndResponder } from '@hello-pangea/dnd';
-import { DndList3TreeDepth1 } from './DndList3TreeDepth1';
-import { useDndDepth1Store } from './DndList3';
-import { reorderList } from './DndList3TreeHelper';
-import { DraggableParent } from './DndList3TreeTypes';
+import { DndListGridCompAxis1 } from './DndListGridCompAxis1';
+import { useDndGridAxis1Store } from './DndListGrid';
+import { reorderList } from './DndListGridCompHelpers';
+import { DraggableParent } from './DndListGridCompTypes';
 
-export function DndList3Tree() {
-    const depth1Store = useDndDepth1Store();
+export function DndListGridComp() {
+    const depth1Store = useDndGridAxis1Store();
 
     const depth1Typed = depth1Store.items as DraggableParent[];
 
@@ -80,7 +80,7 @@ export function DndList3Tree() {
 
     return (
         <DragDropContext onDragEnd={dragEnd}>
-            <DndList3TreeDepth1 />
+            <DndListGridCompAxis1 />
         </DragDropContext>
     );
 }

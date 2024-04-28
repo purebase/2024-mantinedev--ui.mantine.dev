@@ -1,9 +1,9 @@
 import { Text } from '@mantine/core';
 import { create } from 'zustand';
-import classes from './DndList3.module.css';
-import { DndList3Tree } from './DndList3Tree';
+import classes from './DndListGrid.module.css';
+import { DndListGridComp } from './DndListGridComp';
 
-import { DndLayerStore, DraggableItem, DraggableParent } from './DndList3TreeTypes';
+import { DndGridAxisStore, DraggableItem, DraggableParent } from './DndListGridCompTypes';
 
 export interface Team extends DraggableParent {
     // Feel free to define custom properties
@@ -37,7 +37,7 @@ const playerList: Player[] = [
     { id: '12', age: 6, mass: 12.011, symbol: '12', name: 'WILMAR' },
 ];
 
-export const useDndDepth1Store = create<DndLayerStore<Team>>((setState) => ({
+export const useDndGridAxis1Store = create<DndGridAxisStore<Team>>((setState) => ({
     items: teamList, setItems: (items) => setState({ items }),
     direction: 'vertical',
     renderItem: (item: DraggableItem) => {
@@ -48,7 +48,7 @@ export const useDndDepth1Store = create<DndLayerStore<Team>>((setState) => ({
     },
 }));
 
-export const useDndDepth2Store = create<DndLayerStore<Player>>((setState) => ({
+export const useDndGridAxis2Store = create<DndGridAxisStore<Player>>((setState) => ({
     items: playerList, setItems: (items) => setState({ items }),
     direction: 'horizontal',
     renderItem: (item: DraggableItem) => {
@@ -66,8 +66,8 @@ export const useDndDepth2Store = create<DndLayerStore<Player>>((setState) => ({
     },
 }));
 
-export function DndList3() {
+export function DndListGrid() {
     return (
-        <DndList3Tree />
+        <DndListGridComp />
     );
 }

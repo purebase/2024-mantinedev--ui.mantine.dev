@@ -141,7 +141,7 @@ export { DropzoneButton } from './DropzoneButton/DropzoneButton';
 // DND
 export { DndList } from './DndList/DndList';
 export { DndListReusable } from './DndListReusable/DndListReusable';
-export { DndList3 } from './DndList3/DndList3';
+export { DndListGrid } from './DndListGrid/DndListGrid';
 export { DndListHandle } from './DndListHandle/DndListHandle';
 export { DndTable } from './DndTable/DndTable';
 
