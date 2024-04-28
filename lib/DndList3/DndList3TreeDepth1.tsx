@@ -2,12 +2,12 @@ import { Draggable, Droppable } from '@hello-pangea/dnd';
 import cx from 'clsx';
 import classes from './DndList3.module.css';
 
-import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
 import { DndList3TreeDepth2 } from './DndList3TreeDepth2';
 import { useDndDepth2Store, useDndDepth1Store } from './DndList3';
 
+import { DraggableItem, DraggableParent } from './DndList3TreeTypes';
+
 export function DndList3TreeDepth1() {
-    //const { treeDepth1_data, treeDepth1_renderItem, treeDepth2_data, treeDepth1_direction } = useContext(DndList3Context);
     const depth1Store = useDndDepth1Store();
     const depth2Store = useDndDepth2Store();
 

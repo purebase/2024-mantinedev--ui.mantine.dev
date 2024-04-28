@@ -1,20 +1,10 @@
 import { DragDropContext, OnDragEndResponder } from '@hello-pangea/dnd';
 import { DndList3TreeDepth1 } from './DndList3TreeDepth1';
-import { DraggableParent } from './DndList3TreeTypes';
 import { useDndDepth1Store } from './DndList3';
-
-function reorderList({ current, from, to }: { current: any[], from: number; to: number }) {
-    const cloned = [...current];
-    const item = current[from];
-
-    cloned.splice(from, 1);
-    cloned.splice(to, 0, item);
-
-    return cloned;
-}
+import { reorderList } from './DndList3TreeHelper';
+import { DraggableParent } from './DndList3TreeTypes';
 
 export function DndList3Tree() {
-    //const { treeDepth1_data, treeDepth1_dataHandlers } = useContext(DndList3Context);
     const depth1Store = useDndDepth1Store();
 
     const depth1Typed = depth1Store.items as DraggableParent[];
@@ -89,9 +79,7 @@ export function DndList3Tree() {
     });
 
     return (
-        <DragDropContext
-          onDragEnd={dragEnd}
-        >
+        <DragDropContext onDragEnd={dragEnd}>
             <DndList3TreeDepth1 />
         </DragDropContext>
     );
