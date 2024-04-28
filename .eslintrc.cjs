@@ -7,6 +7,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'import/extensions': 'off',
     'max-len': 'off',
-    'object-property-newline': 'off'
+    'object-property-newline': 'off',
+    'import/no-cycle': 'off'
   },
 };
