@@ -1,19 +1,17 @@
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import cx from 'clsx';
 import classes from './DndListGrid.module.css';
-
+import { AxisSettingsProps, DraggableItem, DraggableParent } from './DndListGridCompTypes';
+import { useDndGridAxis1Store, useDndGridAxis2Store } from './DndListGridComp';
 import { DndListGridCompAxis2 } from './DndListGridCompAxis2';
-import { useDndGridAxis2Store, useDndGridAxis1Store } from './DndListGrid';
 
-import { DraggableItem, DraggableParent } from './DndListGridCompTypes';
-
-export function DndListGridCompAxis1() {
-    const depth1Store = useDndGridAxis1Store();
-    const depth2Store = useDndGridAxis2Store();
+export function DndListGridCompAxis1(p: { axis1Settings: AxisSettingsProps<unknown>, axis2Settings: AxisSettingsProps<unknown> }) {
+    const axis1Store = useDndGridAxis1Store();
+    const axis2Store = useDndGridAxis2Store();
 
     const processItem = (item: DraggableParent, index: number) => {
         const childItems = item.children.map(
-            (itemId) => depth2Store.items.find(itemDepth2 => itemDepth2.id === itemId)
+            (itemId) => axis2Store.items.find(itemDepth2 => itemDepth2.id === itemId)
         ).filter(itemDepth2 => itemDepth2 !== undefined) as DraggableItem[];
 
         return (
@@ -25,11 +23,12 @@ export function DndListGridCompAxis1() {
                       {...drag1Provider.dragHandleProps}
                       ref={drag1Provider.innerRef}
                     >
-                        {depth1Store.renderItem(item)}
+                        {p.axis1Settings.renderItem(item)}
 
                         <DndListGridCompAxis2
                           parentId={item.id}
                           items={childItems}
+                          axis2Settings={p.axis2Settings}
                         />
                     </li>
                 )}
@@ -37,12 +36,12 @@ export function DndListGridCompAxis1() {
         );
     };
 
-    const classname = (depth1Store.direction === 'vertical') ? classes.depth1boxv : classes.depth1boxh;
+    const classname = (p.axis1Settings.direction === 'vertical') ? classes.depth1boxv : classes.depth1boxh;
     return (
-        <Droppable droppableId="ROOT" direction={depth1Store.direction} type="">
+        <Droppable droppableId="ROOT" direction={p.axis1Settings.direction} type="">
             {(drop1Provider) => (
                 <ul ref={drop1Provider.innerRef} className={classname}>
-                    {depth1Store.items.map(processItem)}
+                    {axis1Store.items.map(processItem)}
                     {drop1Provider.placeholder}
                 </ul>
             )}

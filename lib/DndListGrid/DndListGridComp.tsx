@@ -1,13 +1,28 @@
 import { DragDropContext, OnDragEndResponder } from '@hello-pangea/dnd';
+import { useEffect } from 'react';
+import { create } from 'zustand';
 import { DndListGridCompAxis1 } from './DndListGridCompAxis1';
-import { useDndGridAxis1Store } from './DndListGrid';
 import { reorderList } from './DndListGridCompHelpers';
-import { DraggableParent } from './DndListGridCompTypes';
+import { AxisProps, DndGridAxisStore, DraggableItem, DraggableParent } from './DndListGridCompTypes';
 
-export function DndListGridComp() {
-    const depth1Store = useDndGridAxis1Store();
+export const useDndGridAxis1Store = create<DndGridAxisStore<DraggableParent>>((setState) => ({
+    items: [], setItems: (items) => setState({ items }),
+}));
 
-    const depth1Typed = depth1Store.items as DraggableParent[];
+export const useDndGridAxis2Store = create<DndGridAxisStore<DraggableItem>>((setState) => ({
+    items: [], setItems: (items) => setState({ items }),
+}));
+
+export function DndListGridComp(p: { axis1: AxisProps, axis2: AxisProps }) {
+    const axis1Store = useDndGridAxis1Store();
+    const axis2Store = useDndGridAxis2Store();
+
+    const depth1Typed = axis1Store.items as DraggableParent[];
+
+    useEffect(() => {
+        if (p.axis1.data) axis1Store.setItems(p.axis1.data as DraggableParent[]);
+        if (p.axis2.data) axis2Store.setItems(p.axis2.data as DraggableItem[]);
+    }, []);
 
     const dragEnd: OnDragEndResponder = (result => {
         const { source, destination } = result;
@@ -20,8 +35,8 @@ export function DndListGridComp() {
         }
 
         if (destination.droppableId === 'ROOT') {
-            const newState = reorderList({ current: depth1Store.items, from: source.index, to: destination?.index || 0 });
-            depth1Store.setItems(newState);
+            const newState = reorderList({ current: axis1Store.items, from: source.index, to: destination?.index || 0 });
+            axis1Store.setItems(newState);
             return;
         }
 
@@ -48,7 +63,7 @@ export function DndListGridComp() {
                     return currentCategory;
                 });
 
-            depth1Store.setItems(newState);
+            axis1Store.setItems(newState);
         } else {
             const startChildIds = [...sourceBox.children];
             // Remember dragged item before deleting it:
@@ -74,13 +89,13 @@ export function DndListGridComp() {
                     if (currentCategory.id === finishCategory.id) return finishCategory;
                     return currentCategory;
                 });
-            depth1Store.setItems(newState);
+            axis1Store.setItems(newState);
         }
     });
 
     return (
         <DragDropContext onDragEnd={dragEnd}>
-            <DndListGridCompAxis1 />
+            <DndListGridCompAxis1 axis1Settings={p.axis1.settings} axis2Settings={p.axis2.settings} />
         </DragDropContext>
     );
 }

@@ -9,9 +9,16 @@ export interface DraggableParent extends DraggableItem {
 
 export type DndGridAxisDirection = 'vertical' | 'horizontal';
 
-export interface DndGridAxisStore<T> {
-    items: T[],
-    setItems: (items: T[]) => void,
+export interface AxisSettingsProps<T> {
     direction: DndGridAxisDirection,
-    renderItem: (parent: DraggableItem) => JSX.Element
+    renderItem: (item: T) => JSX.Element
+}
+
+export interface AxisProps {
+    data: DraggableParent[] | DraggableItem[],
+    settings: AxisSettingsProps<unknown>
+}
+
+export interface DndGridAxisStore<T> {
+    items: T[], setItems: (items: T[]) => void
 }

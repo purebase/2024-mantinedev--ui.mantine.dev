@@ -1,19 +1,19 @@
 import { Text } from '@mantine/core';
-import { create } from 'zustand';
 import classes from './DndListGrid.module.css';
 import { DndListGridComp } from './DndListGridComp';
 
-import { DndGridAxisStore, DraggableItem, DraggableParent } from './DndListGridCompTypes';
-
-export interface Team extends DraggableParent {
-    // Feel free to define custom properties
+export interface Team {
+    id: string;
+    name: string;
+    children: string[];
 }
 
-export interface Player extends DraggableItem {
-    // Feel free to define custom properties
-    age: number,
-    mass: number,
-    symbol: string
+export interface Player {
+    id: string;
+    age: number;
+    mass: number;
+    symbol: string;
+    name: string;
 }
 
 const teamList: Team[] = [
@@ -37,37 +37,44 @@ const playerList: Player[] = [
     { id: '12', age: 6, mass: 12.011, symbol: '12', name: 'WILMAR' },
 ];
 
-export const useDndGridAxis1Store = create<DndGridAxisStore<Team>>((setState) => ({
-    items: teamList, setItems: (items) => setState({ items }),
-    direction: 'vertical',
-    renderItem: (item: DraggableItem) => {
-        const team = item as Team;
-        return (
-            <Text color="#ff0000">{team.name}</Text>
-        );
-    },
-}));
-
-export const useDndGridAxis2Store = create<DndGridAxisStore<Player>>((setState) => ({
-    items: playerList, setItems: (items) => setState({ items }),
-    direction: 'horizontal',
-    renderItem: (item: DraggableItem) => {
-        const player = item as Player;
-        return (
-            <>
-                <Text className={classes.symbol}>{player.symbol}</Text>
-                <div>
-                    <Text>{item.name}</Text>
-                    <Text c="dimmed" size="sm">
-                        Age: {player.age} • Mass: {player.mass}
-                    </Text>
-                </div>
-            </>);
-    },
-}));
-
 export function DndListGrid() {
     return (
-        <DndListGridComp />
+        <DndListGridComp
+          axis1={{
+                data: teamList.map(item => (
+                    { content: item, id: item.id, name: item.name, children: item.children }
+                )),
+                settings: {
+                    direction: 'vertical',
+                    renderItem: (item) => {
+                        const team = item as Team;
+                        return (
+                            <Text color="#ff0000">{team.name}</Text>
+                        );
+                    }
+                }
+            }}
+          axis2={{
+                data: playerList.map(item => (
+                    { content: item, id: item.id, name: item.name }
+                )),
+                settings: {
+                    direction: 'horizontal',
+                    renderItem: (item) => {
+                        const player = item as Player;
+                        return (
+                            <>
+                                <Text className={classes.symbol}>{player.symbol}</Text>
+                                <div>
+                                    <Text>{player.name}</Text>
+                                    <Text c="dimmed" size="sm">
+                                        Age: {player.age} • Mass: {player.mass}
+                                    </Text>
+                                </div>
+                            </>);
+                    }
+                }
+            }}
+        />
     );
 }

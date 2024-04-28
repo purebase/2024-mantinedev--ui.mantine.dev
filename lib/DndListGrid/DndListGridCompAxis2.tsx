@@ -1,19 +1,15 @@
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import cx from 'clsx';
 import classes from './DndListGrid.module.css';
-
-import { useDndGridAxis2Store } from './DndListGrid';
-
-import { DraggableItem } from './DndListGridCompTypes';
+import { AxisSettingsProps, DraggableItem } from './DndListGridCompTypes';
 
 interface Props {
     parentId: string,
-    items: Array<DraggableItem>
+    items: Array<DraggableItem>,
+    axis2Settings: AxisSettingsProps<unknown>
 }
 
 export function DndListGridCompAxis2(p: Props) {
-    const depth2Store = useDndGridAxis2Store();
-
     const processItem = (item: DraggableItem, index: number) => (
             <Draggable key={item.id} index={index} draggableId={`${item.id}`}>
                 {(drag2Provider, snapshot) => (
@@ -24,15 +20,15 @@ export function DndListGridCompAxis2(p: Props) {
                       {...drag2Provider.dragHandleProps}
                       ref={drag2Provider.innerRef}
                     >
-                        {depth2Store.renderItem(item)}
+                        {p.axis2Settings.renderItem(item)}
                     </li>
                 )}
             </Draggable>
         );
 
-    const classname = (depth2Store.direction === 'vertical') ? classes.depth2boxv : classes.depth2boxh;
+    const classname = (p.axis2Settings.direction === 'vertical') ? classes.depth2boxv : classes.depth2boxh;
     return (
-        <Droppable droppableId={`${p.parentId}`} direction={depth2Store.direction}>
+        <Droppable droppableId={`${p.parentId}`} direction={p.axis2Settings.direction}>
             {(drop2Provider) => (
                 <ul ref={drop2Provider.innerRef} className={classname}>
                     {p.items.map(processItem)}
