@@ -1,5 +1,5 @@
 {
-  "title": "Drag'n'drop list 2",
+  "title": "Drag'n'drop list as resuable component",
   "category": "dnd",
   "canvas": {
     "center": true,
