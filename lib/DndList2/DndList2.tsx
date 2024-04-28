@@ -1,9 +1,6 @@
 import { Text } from '@mantine/core';
-import { create } from 'zustand';
 import classes from './DndList2.module.css';
-// eslint-disable-next-line import/no-cycle
 import { DndList2GenericComp } from './DndList2GenericComp';
-import { ChemicalItemsStore } from './DndList2Zustand';
 
 interface ChemicalItem {
   id: string, position: number, mass: number, symbol: string, name: string
@@ -16,11 +13,6 @@ const data: ChemicalItem[] = [
     { id: '4', position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
     { id: '5', position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
 ];
-
-export const useChemicalItemStore = create<ChemicalItemsStore>((setState) => ({
-    items: data,
-    setItems: (items) => setState({ items }),
-}));
 
 const renderItem = (item: ChemicalItem) => (
     <>
@@ -35,8 +27,8 @@ const renderItem = (item: ChemicalItem) => (
 );
 
 export function DndList2() {
-
     return <DndList2GenericComp<ChemicalItem>
+      content={data}
       renderItem={renderItem}
       getItemId={(index) => data[index].id}
     />;
