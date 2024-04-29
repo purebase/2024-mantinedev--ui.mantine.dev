@@ -18,7 +18,7 @@ export function DndListGridCompAxis1(p: { axis1Settings: AxisSettingsProps<Dragg
             <Draggable key={item.id} index={index} draggableId={`category${item.id}`}>
                 {(drag1Provider) => (
                     <li
-                      className={cx(classes.depth1boxitem)}
+                      className={cx(classes.axis1BoxItem)}
                       {...drag1Provider.draggableProps}
                       {...drag1Provider.dragHandleProps}
                       ref={drag1Provider.innerRef}
@@ -36,7 +36,7 @@ export function DndListGridCompAxis1(p: { axis1Settings: AxisSettingsProps<Dragg
         );
     };
 
-    const classname = (p.axis1Settings.direction === 'vertical') ? classes.depth1boxv : classes.depth1boxh;
+    const classname = (p.axis1Settings.direction === 'vertical') ? classes.axis1BoxV : classes.axis1BoxH;
     return (
         <Droppable droppableId="ROOT" direction={p.axis1Settings.direction} type="">
             {(drop1Provider) => (

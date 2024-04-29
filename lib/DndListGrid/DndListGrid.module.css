@@ -1,13 +1,13 @@
-.depth1boxv {
+.axis1BoxV {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
-.depth1boxh {
+.axis1BoxH {
   display: flex;
   flex-direction: row;
 }
-.depth1boxitem {
+.axis1BoxItem {
   display: flex;
   align-items: center;
   border-radius: var(--mantine-radius-md);
@@ -17,15 +17,15 @@
   margin-bottom: var(--mantine-spacing-sm);
 }
 
-.depth2boxv {
+.axis2BoxV {
   display: flex;
   flex-direction: column;
 }
-.depth2boxh {
+.axis2BoxH {
   display: flex;
   flex-direction: row;
 }
-.depth2boxitem {
+.axis2BoxItem {
   display: flex;
   align-items: center;
   width: 12rem;

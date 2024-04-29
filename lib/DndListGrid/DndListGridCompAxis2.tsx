@@ -14,7 +14,7 @@ export function DndListGridCompAxis2(p: Props) {
             <Draggable key={item.id} index={index} draggableId={`${item.id}`}>
                 {(drag2Provider, snapshot) => (
                     <li
-                      className={cx(classes.depth2boxitem,
+                      className={cx(classes.axis2BoxItem,
                             { [classes.itemDragging]: snapshot.isDragging })}
                       {...drag2Provider.draggableProps}
                       {...drag2Provider.dragHandleProps}
@@ -26,7 +26,7 @@ export function DndListGridCompAxis2(p: Props) {
             </Draggable>
         );
 
-    const classname = (p.axis2Settings.direction === 'vertical') ? classes.depth2boxv : classes.depth2boxh;
+    const classname = (p.axis2Settings.direction === 'vertical') ? classes.axis2BoxV : classes.axis2BoxH;
     return (
         <Droppable droppableId={`${p.parentId}`} direction={p.axis2Settings.direction}>
             {(drop2Provider) => (
